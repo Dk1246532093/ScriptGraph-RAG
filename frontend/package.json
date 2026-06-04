@@ -1,0 +1,30 @@
+{
+    "name": "scriptgraph-rag-frontend",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc && vite build",
+        "preview": "vite preview",
+        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    },
+    "dependencies": {
+        "vue": "^3.4.15",
+        "vue-router": "^4.2.5",
+        "pinia": "^2.1.7",
+        "axios": "^1.6.7",
+        "element-plus": "^2.5.3",
+        "@element-plus/icons-vue": "^2.3.1",
+        "cytoscape": "^3.28.1",
+        "js-yaml": "^4.1.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.16",
+        "@types/js-yaml": "^4.0.9",
+        "@vitejs/plugin-vue": "^5.0.3",
+        "typescript": "^5.3.3",
+        "vite": "^5.0.12",
+        "vue-tsc": "^1.8.27"
+    }
+}

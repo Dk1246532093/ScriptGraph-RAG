@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# venv
+venv/
+.venv/
+env/
+
+# FastAPI / backend
+uploads/
+data/
+*.log
+
+# Node / Vue
+node_modules/
+dist/
+
+# environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# system
+.DS_Store
+Thumbs.db
+
+# cache
+.cache/
+tmp/
+temp/
