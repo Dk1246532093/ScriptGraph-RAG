@@ -8,9 +8,14 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/HomeView.vue')
   },
   {
-    path: '/upload',
-    name: 'Upload',
-    component: () => import('@/views/UploadView.vue')
+    path: '/bookshelf',
+    name: 'Bookshelf',
+    component: () => import('@/views/BookshelfView.vue')
+  },
+  {
+    path: '/novel/:id',
+    name: 'NovelDetail',
+    component: () => import('@/views/NovelDetailView.vue')
   },
   {
     path: '/knowledge-graph',

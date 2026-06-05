@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
+from app.api import novels
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -22,6 +23,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 注册路由
+app.include_router(novels.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")
