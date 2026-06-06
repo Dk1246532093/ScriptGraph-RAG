@@ -4,12 +4,15 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
 import uuid
+import json
 from datetime import datetime
+from pathlib import Path
 
 from app.models.script import ScriptGenerateRequest, Script, ScriptConfig
 from app.services.novel_service import novel_service
 from app.services.script_service import script_service
 from app.utils.scene_splitter import process_chapters_to_scenes, scenes_to_dict
+from app.utils.script_generator import generate_script_from_scenes
 
 router = APIRouter()
 
@@ -68,13 +71,37 @@ async def generate_script(request: ScriptGenerateRequest):
         script_id, selected_chapters
     )
     
-    # 读取保存的知识图谱数据返回给前端
-    import json
+    # 读取保存的知识图谱数据
     kg_data = {}
     if kg_path.exists():
         with open(kg_path, 'r', encoding='utf-8') as f:
             kg_file_content = json.load(f)
             kg_data = kg_file_content.get("data", {})
+    
+    # 生成详细剧本：根据场景和知识图谱生成完整剧本
+    print(f"Generating final script for {script_id}...")
+    try:
+        script_data = await generate_script_from_scenes(scenes_dict, kg_data)
+        print(f"Script generated: {len(script_data)} scenes")
+    except Exception as e:
+        print(f"Error generating script: {e}")
+        import traceback
+        traceback.print_exc()
+        script_data = []
+    
+    # 保存剧本
+    if script_data:
+        save_path = script_service.save_script(script_id, script_data)
+        print(f"Script saved to: {save_path}")
+    else:
+        print("Warning: No script data to save")
+    
+    # 统计剧本信息
+    total_beats = sum(len(scene.get("beats", [])) for scene in script_data)
+    total_lines = sum(
+        sum(len(beat.get("script", [])) for beat in scene.get("beats", []))
+        for scene in script_data
+    )
     
     return {
         "script_id": script_id,
@@ -88,9 +115,13 @@ async def generate_script(request: ScriptGenerateRequest):
         "knowledge_graph": kg_data,
         "kg_node_count": len(kg_data.get("nodes", [])),
         "kg_edge_count": len(kg_data.get("edges", [])),
+        "script": script_data,
+        "script_scene_count": len(script_data),
+        "script_beat_count": total_beats,
+        "script_line_count": total_lines,
         "config": request.config.dict() if request.config else None,
-        "status": "kg_generated",
-        "message": "剧本生成任务已创建，章节已分割为场景，知识图谱已生成",
+        "status": "completed",
+        "message": "剧本生成完成，包含场景分割、知识图谱和详细剧本",
         "created_at": datetime.now().isoformat()
     }
 
@@ -147,5 +178,42 @@ async def list_scripts(novel_id: str = None):
     return {
         "code": 200,
         "data": tasks,
+        "message": "success"
+    }
+
+
+
+
+
+@router.get("/{script_id}/script", response_model=dict)
+async def get_script_content(script_id: str):
+    """
+    获取已生成的剧本内容
+    
+    Args:
+        script_id: 剧本任务ID
+    
+    Returns:
+        剧本内容
+    """
+    task = script_service.get_task(script_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="剧本任务不存在")
+    
+    script_path = script_service.get_task_file(script_id, "script.json")
+    if not script_path:
+        raise HTTPException(status_code=404, detail="剧本尚未生成")
+    
+    with open(script_path, 'r', encoding='utf-8') as f:
+        script_file_content = json.load(f)
+        script_data = script_file_content.get("data", [])
+    
+    return {
+        "code": 200,
+        "data": {
+            "script_id": script_id,
+            "scenes": script_data,
+            "scene_count": len(script_data)
+        },
         "message": "success"
     }
