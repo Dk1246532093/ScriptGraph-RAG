@@ -66,7 +66,7 @@
       <!-- 生成按钮 -->
       <div class="generate-section">
         <el-button type="primary" size="large" :disabled="selectedChapters.size === 0 || generating"
-          :loading="generating" @click="generateScript">
+          :loading="generating" @click="handleGenerateScript">
           {{ generating ? '生成中...' : '生成剧本' }}
         </el-button>
       </div>
@@ -79,6 +79,7 @@
   import { useRoute, useRouter } from 'vue-router'
   import { ElMessage } from 'element-plus'
   import { getNovelDetail, getNovelChapters } from '@/api/novel'
+  import { generateScript } from '@/api/script'
 
   const route = useRoute()
   const router = useRouter()
@@ -201,7 +202,7 @@
   }
 
   // 生成剧本
-  const generateScript = async () => {
+  const handleGenerateScript = async () => {
     if (selectedChapters.value.size === 0) {
       ElMessage.warning('请至少选择一章')
       return
@@ -210,22 +211,24 @@
     generating.value = true
 
     try {
-      // TODO: 调用后端API生成剧本
       const selectedChapterIds = Array.from(selectedChapters.value)
-      console.log('生成剧本：', {
-        novelId: novelId.value,
-        chapters: selectedChapterIds,
-        config: config.value
+      const res = await generateScript({
+        novel_id: novelId.value,
+        chapter_ids: selectedChapterIds,
+        config: {
+          style: config.value.style,
+          characters: config.value.characters,
+          requirements: config.value.requirements
+        }
       })
 
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      ElMessage.success('剧本生成任务已创建')
+      console.log('生成结果：', res)
 
-      ElMessage.success('剧本生成成功')
-      // 跳转到剧本编辑页面
-      // router.push(`/script-edit?novelId=${novelId.value}`)
-    } catch (error) {
-      ElMessage.error('生成剧本失败')
+      // TODO: 跳转到剧本编辑页面或显示生成进度
+      // router.push(`/script-edit?scriptId=${res.script_id}`)
+    } catch (error: any) {
+      ElMessage.error(error.response?.data?.detail || '生成剧本失败')
       console.error(error)
     } finally {
       generating.value = false
