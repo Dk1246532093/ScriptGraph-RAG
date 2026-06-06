@@ -20,7 +20,10 @@ class Scene:
     title: str
     location: str
     characters: List[str]
-    content: str
+    start_text: str
+    end_text: str
+    beats: List[str]
+    dramatic_purpose: str
     chapter_id: str
     chapter_title: str
 
@@ -48,39 +51,172 @@ class DeepSeekSceneSplitter:
         if len(chapter_content) > max_length:
             return await self._split_long_chapter(chapter_content, chapter_title)
         
-        prompt = f"""请将以下小说章节内容分割成多个场景（scene）。
+        prompt = f"""你是一名专业编剧、影视剧本顾问和叙事结构分析师。
 
-章节标题：{chapter_title}
+请将以下小说章节内容分析并划分为多个影视场景（Scene）。
+
+章节标题：
+{chapter_title}
 
 章节内容：
 {chapter_content}
 
-请分析内容，将故事按场景转换分割。每个场景应包含：
-1. 场景标题（简短描述）
-2. 地点
-3. 出现的角色列表
-4. 场景内容摘要（800字以内）
-5. 场景在原章节中的大致位置（起始字符位置）
-6. 场景在原章节中的大致位置（结束字符位置）
+====================
+Scene划分原则
+====================
 
-请以 JSON 格式返回，格式如下：
+Scene（场景）是影视叙事中的完整戏剧单元。
+
+一个Scene必须满足：
+
+- 发生在同一时间段
+- 发生在同一地点
+- 围绕同一个核心冲突或核心事件
+- 具有完整的戏剧过程（开始→发展→结果）
+
+重要：
+
+不要因为字数较长而拆分Scene。
+
+不要因为人物情绪变化而拆分Scene。
+
+不要因为战斗升级而拆分Scene。
+
+不要因为角色做出新决定而拆分Scene。
+
+不要因为剧情进入下一阶段而拆分Scene。
+
+如果事件仍然连续发生在同一时间、同一地点、同一冲突中，则应视为同一个Scene。
+
+例如：
+
+错误：
+
+Scene1：发现追兵
+Scene2：开始逃跑
+Scene3：李三受伤
+Scene4：决定断后
+Scene5：装死反击
+
+正确：
+
+Scene1：大漠追杀
+
+因为上述内容属于同一时间、同一地点、同一追杀事件。
+
+====================
+仅在以下情况创建新Scene
+====================
+
+1. 地点发生变化
+
+例如：
+
+大漠 → 客栈
+
+2. 时间发生明显变化
+
+例如：
+
+白天 → 夜晚
+
+三年前 → 三年后
+
+3. 叙事视角切换到另一组人物
+
+例如：
+
+李文秀逃亡
+
+切换到
+
+追兵营地议事
+
+4. 当前核心冲突结束
+
+并进入新的独立故事阶段
+
+例如：
+
+逃亡结束
+
+进入客栈休整
+
+5. 主角开始执行新的独立行动线
+
+例如：
+
+成功脱险
+
+开始寻找藏宝图
+
+====================
+Beat划分原则
+====================
+
+Beat（剧情节点）是Scene内部的重要戏剧动作。
+
+一个Scene可以包含多个Beat。
+
+例如：
+
+Scene：大漠追杀
+
+Beat：
+- 一家三口逃亡
+- 李三中箭
+- 红马倒毙
+- 追兵逼近
+- 李三决定断后
+- 装死反击
+- 壮烈战死
+
+这些内容属于同一个Scene。
+
+====================
+输出要求
+====================
+
+请识别本章节中的所有Scene。
+
+每个Scene包含：
+
+- title：场景标题
+- location：场景地点
+- characters：主要出场人物
+- start_text：场景开始的原文（前50字左右，用于定位场景起点）
+- end_text：场景结束的原文（后50字左右，用于定位场景终点）
+- dramatic_purpose：戏剧作用
+- beats：场景内部关键剧情节点列表
+
+返回格式：
+
 {{
-    "scenes": [
-        {{
-            "title": "场景标题",
-            "location": "地点",
-            "characters": ["角色1", "角色2"],
-            "summary": "场景内容摘要",
-            "start_pos": 0,
-            "end_pos": 500
-        }}
-    ]
+  "scenes": [
+    {{
+      "title": "",
+      "location": "",
+      "characters": [],
+      "start_text": "",
+      "end_text": "",
+      "dramatic_purpose": "",
+      "beats": [
+        ""
+      ]
+    }}
+  ]
 }}
 
-注意：
-- 场景转换通常发生在：地点变化、时间变化、新人物出场、情节转折处
-- 每个场景应该有相对完整的情节单元
-- 返回有效的 JSON 格式，不要添加其他说明文字"""
+要求：
+
+- Scene数量尽可能少且合理
+- 每个Scene必须是完整戏剧单元
+- 不允许按字数切分
+- 不允许按段落切分
+- 优先遵循影视剧本结构
+- beats数量不限
+- 仅返回JSON
+"""
 
         try:
             response = await self.client.chat.completions.create(
@@ -121,12 +257,6 @@ class DeepSeekSceneSplitter:
             chunk = chapter_content[start:end]
             
             chunk_scenes = await self.split_chapter_with_ai(chunk, f"{chapter_title} (片段)")
-            
-            # 调整位置偏移
-            for scene in chunk_scenes:
-                scene["start_pos"] = scene.get("start_pos", 0) + start
-                scene["end_pos"] = scene.get("end_pos", 0) + start
-            
             scenes.extend(chunk_scenes)
             
             if end >= len(chapter_content):
@@ -164,23 +294,100 @@ async def split_chapter_with_ai(chapter_content: str, chapter_id: str, chapter_t
     # 转换为 Scene 对象
     scenes = []
     for i, ai_scene in enumerate(ai_scenes, 1):
-        # 根据 AI 返回的位置提取原始内容
-        start_pos = ai_scene.get("start_pos", 0)
-        end_pos = ai_scene.get("end_pos", len(chapter_content))
-        scene_content = chapter_content[start_pos:end_pos]
+        # AI 返回 start_text 和 end_text
+        start_text = ai_scene.get("start_text", "")
+        end_text = ai_scene.get("end_text", "")
+        
+        # 根据 start_text 和 end_text 从章节内容中提取完整片段
+        full_content = extract_scene_content(chapter_content, start_text, end_text)
         
         scene = Scene(
             scene_id=f"{chapter_id}_scene_{i}",
             title=ai_scene.get("title", f"场景 {i}"),
             location=ai_scene.get("location", "未知地点"),
             characters=ai_scene.get("characters", []),
-            content=scene_content if scene_content else ai_scene.get("summary", ""),
+            start_text=start_text,
+            end_text=end_text,
+            beats=ai_scene.get("beats", []),
+            dramatic_purpose=ai_scene.get("dramatic_purpose", ""),
             chapter_id=chapter_id,
             chapter_title=chapter_title
         )
         scenes.append(scene)
+        
+        # 将完整内容保存到场景对象的一个额外属性中（用于后续存储）
+        scene.full_content = full_content
     
     return scenes
+
+
+def extract_scene_content(chapter_content: str, start_text: str, end_text: str) -> str:
+    """
+    根据开始文本和结束文本，从章节内容中提取完整场景
+    """
+    if not start_text or not end_text:
+        return chapter_content
+    
+    # 清理文本（去除多余空格和换行）用于匹配
+    def clean_text(text: str) -> str:
+        return ' '.join(text.split())
+    
+    chapter_clean = clean_text(chapter_content)
+    start_clean = clean_text(start_text)
+    end_clean = clean_text(end_text)
+    
+    # 查找开始位置
+    start_idx = chapter_clean.find(start_clean)
+    if start_idx == -1:
+        # 如果精确匹配失败，尝试只匹配前20个字符
+        start_partial = clean_text(start_text[:20])
+        start_idx = chapter_clean.find(start_partial)
+    
+    if start_idx == -1:
+        # 还是找不到，返回整个章节
+        return chapter_content
+    
+    # 查找结束位置（从开始位置之后查找）
+    search_from = start_idx + len(start_clean)
+    end_idx = chapter_clean.find(end_clean, search_from)
+    
+    if end_idx == -1:
+        # 如果精确匹配失败，尝试只匹配后20个字符
+        end_partial = clean_text(end_text[-20:])
+        end_idx = chapter_clean.find(end_partial, search_from)
+    
+    # 将清理后的开始索引映射回原始文本
+    original_start = find_original_position(chapter_content, chapter_clean, start_idx)
+    
+    if end_idx == -1:
+        # 找不到结束位置，返回从开始到章节末尾
+        return chapter_content[original_start:]
+    
+    # 提取完整内容（包括结束文本）
+    end_idx += len(end_clean)
+    
+    # 将清理后的结束索引映射回原始文本
+    original_end = find_original_position(chapter_content, chapter_clean, end_idx)
+    
+    return chapter_content[original_start:original_end]
+
+
+def find_original_position(original: str, cleaned: str, cleaned_pos: int) -> int:
+    """
+    将清理后文本的位置映射回原始文本的位置
+    """
+    original_pos = 0
+    cleaned_count = 0
+    
+    for char in original:
+        if cleaned_count >= cleaned_pos:
+            break
+        if not char.isspace() or (original_pos > 0 and original[original_pos-1:original_pos+1] == '\n\n'):
+            # 保留段落分隔
+            cleaned_count += 1
+        original_pos += 1
+    
+    return original_pos
 
 
 def extract_location(text: str) -> str:
@@ -289,16 +496,23 @@ def split_into_scenes(chapter_content: str, chapter_id: str, chapter_title: str)
 
 
 def create_scene(content: str, scene_index: int, chapter_id: str, chapter_title: str) -> Scene:
-    """创建场景对象"""
+    """创建场景对象（规则分镜回退时使用）"""
     location = extract_location(content[:200])
     characters = extract_characters(content)
+    
+    # 提取开头和结尾文本
+    start_text = content[:100] if len(content) > 100 else content
+    end_text = content[-100:] if len(content) > 100 else content
     
     return Scene(
         scene_id=f"{chapter_id}_scene_{scene_index}",
         title=f"场景 {scene_index}",
         location=location,
         characters=characters,
-        content=content,
+        start_text=start_text,
+        end_text=end_text,
+        beats=[],
+        dramatic_purpose="",
         chapter_id=chapter_id,
         chapter_title=chapter_title
     )
@@ -373,15 +587,22 @@ async def process_chapters_to_scenes(chapters: List[Dict[str, Any]]) -> List[Sce
 
 def scenes_to_dict(scenes: List[Scene]) -> List[Dict[str, Any]]:
     """将场景对象列表转换为字典列表"""
-    return [
-        {
+    result = []
+    for s in scenes:
+        scene_dict = {
             "scene_id": s.scene_id,
             "title": s.title,
             "location": s.location,
             "characters": s.characters,
-            "content": s.content[:500] + "..." if len(s.content) > 500 else s.content,
+            "start_text": s.start_text,
+            "end_text": s.end_text,
+            "beats": s.beats,
+            "dramatic_purpose": s.dramatic_purpose,
             "chapter_id": s.chapter_id,
             "chapter_title": s.chapter_title
         }
-        for s in scenes
-    ]
+        # 如果有完整内容，也添加到字典中
+        if hasattr(s, 'full_content') and s.full_content:
+            scene_dict["content"] = s.full_content
+        result.append(scene_dict)
+    return result
