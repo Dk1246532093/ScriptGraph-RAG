@@ -1,0 +1,20 @@
+{
+  "script_id": "ed34fade-7853-4107-b649-6bbb42829f7d",
+  "novel_id": "016be9fe-3dd0-4fbd-9087-e8c73b020cc9",
+  "novel_title": "白马啸西风(1).TXT",
+  "chapter_ids": [
+    "chapter_1",
+    "chapter_2"
+  ],
+  "config": {
+    "style": "",
+    "characters": "",
+    "requirements": ""
+  },
+  "status": "scenes_generated",
+  "created_at": "2026-06-06T11:09:56.715219",
+  "updated_at": "2026-06-06T11:11:12.881759",
+  "files": {
+    "scenes": "ed34fade-7853-4107-b649-6bbb42829f7d\\scenes.json"
+  }
+}
