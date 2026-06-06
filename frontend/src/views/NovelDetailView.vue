@@ -98,7 +98,7 @@ const selectChapter = async (chapter: any) => {
 
 const goToScriptGen = () => {
   router.push({
-    path: '/script-gen',
+    path: '/script',
     query: { novelId }
   })
 }

@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.api import novels
+from app.api import novels, scripts
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -26,6 +26,7 @@ app.add_middleware(
 
 # 注册路由
 app.include_router(novels.router, prefix=settings.API_V1_STR)
+app.include_router(scripts.router, prefix=f"{settings.API_V1_STR}/scripts")
 
 
 @app.get("/")

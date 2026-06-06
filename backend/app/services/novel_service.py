@@ -58,6 +58,13 @@ class NovelService:
                 return novel
         return None
     
+    def get_novel_chapters(self, novel_id: str) -> List[Chapter]:
+        """获取小说所有章节"""
+        novel = self.get_novel(novel_id)
+        if novel:
+            return novel.chapters
+        return []
+    
     def get_chapter(self, novel_id: str, chapter_id: str) -> Optional[Chapter]:
         """获取章节内容"""
         novel = self.get_novel(novel_id)
