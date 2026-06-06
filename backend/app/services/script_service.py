@@ -9,7 +9,8 @@ from pathlib import Path
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 
-from app.core.config import settings
+from ..core.config import settings
+from ..utils.knowledge_graph import extract_knowledge_graph
 
 
 class ScriptService:
@@ -20,7 +21,7 @@ class ScriptService:
         self.result_dir.mkdir(parents=True, exist_ok=True)
     
     def create_script_task(self, script_id: str, novel_id: str, novel_title: str, 
-                          chapter_ids: List[str], config: Optional[Dict] = None) -> Path:
+                          chapter_ids: List[str], config: Optional[Dict[str, Any]] = None) -> Path:
         """
         创建剧本任务文件夹
         
@@ -76,6 +77,27 @@ class ScriptService:
         })
         
         return scenes_path
+    
+    async def generate_and_save_knowledge_graph(
+        self, 
+        script_id: str, 
+        chapters: List[Dict[str, Any]]
+    ) -> Path:
+        """
+        从章节原文中抽取知识图谱并保存
+        
+        Args:
+            script_id: 剧本任务ID
+            chapters: 章节列表，每个章节包含 id, title, content
+            
+        Returns:
+            图谱文件路径
+        """
+        # 抽取知识图谱
+        kg_data = await extract_knowledge_graph(chapters)
+        
+        # 保存到文件
+        return self.save_knowledge_graph(script_id, kg_data)
     
     def save_knowledge_graph(self, script_id: str, kg_data: Dict[str, Any]) -> Path:
         """
@@ -171,7 +193,7 @@ class ScriptService:
             return file_path
         return None
     
-    def list_tasks(self, novel_id: str = None) -> List[Dict[str, Any]]:
+    def list_tasks(self, novel_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         列出所有任务
         

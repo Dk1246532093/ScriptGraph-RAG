@@ -63,6 +63,19 @@ async def generate_script(request: ScriptGenerateRequest):
     scenes_dict = scenes_to_dict(scenes)
     script_service.save_scenes(script_id, scenes_dict)
     
+    # 知识图谱抽取：从章节原文中抽取三层知识图谱（人物、地点、事件）
+    kg_path = await script_service.generate_and_save_knowledge_graph(
+        script_id, selected_chapters
+    )
+    
+    # 读取保存的知识图谱数据返回给前端
+    import json
+    kg_data = {}
+    if kg_path.exists():
+        with open(kg_path, 'r', encoding='utf-8') as f:
+            kg_file_content = json.load(f)
+            kg_data = kg_file_content.get("data", {})
+    
     return {
         "script_id": script_id,
         "novel_id": request.novel_id,
@@ -72,9 +85,12 @@ async def generate_script(request: ScriptGenerateRequest):
         ],
         "scenes": scenes_dict,
         "scene_count": len(scenes),
+        "knowledge_graph": kg_data,
+        "kg_node_count": len(kg_data.get("nodes", [])),
+        "kg_edge_count": len(kg_data.get("edges", [])),
         "config": request.config.dict() if request.config else None,
-        "status": "scenes_generated",
-        "message": "剧本生成任务已创建，章节已分割为场景",
+        "status": "kg_generated",
+        "message": "剧本生成任务已创建，章节已分割为场景，知识图谱已生成",
         "created_at": datetime.now().isoformat()
     }
 
@@ -97,12 +113,24 @@ async def get_script(script_id: str):
             scenes_data = json.load(f)
             scenes = scenes_data.get("scenes", [])
     
+    # 读取知识图谱数据
+    kg_data = {}
+    kg_path = script_service.get_task_file(script_id, "knowledge_graph.json")
+    if kg_path:
+        import json
+        with open(kg_path, 'r', encoding='utf-8') as f:
+            kg_file_content = json.load(f)
+            kg_data = kg_file_content.get("data", {})
+    
     return {
         "code": 200,
         "data": {
             "task": task,
             "scenes": scenes,
-            "scene_count": len(scenes)
+            "scene_count": len(scenes),
+            "knowledge_graph": kg_data,
+            "kg_node_count": len(kg_data.get("nodes", [])),
+            "kg_edge_count": len(kg_data.get("edges", []))
         },
         "message": "success"
     }
