@@ -29,6 +29,30 @@
 
 ---
 
+## 已实现功能
+
+### ✅ 书架管理
+- 上传 TXT 格式小说文件
+- 自动检测文件编码（UTF-8/GBK/GB2312）
+- 智能解析章节（支持"第X章"、"第一章"等格式）
+- 小说列表展示和删除
+
+### ✅ 小说阅读
+- 章节列表导航
+- 章节内容阅读
+- 小说基本信息展示
+
+### 🚧 知识图谱（开发中）
+- 人物关系图谱构建
+- 剧情时间线展示
+
+### 🚧 剧本生成（开发中）
+- 选择章节范围生成剧本
+- YAML格式剧本输出
+- 在线编辑剧本
+
+---
+
 ## 项目结构
 
 ```
@@ -36,41 +60,44 @@ ScriptGraph-RAG/
 ├── backend/                    # FastAPI 后端服务
 │   ├── app/
 │   │   ├── api/               # API 路由层
-│   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── novels.py      # 小说相关接口
 │   │   ├── core/              # 核心配置
 │   │   │   ├── __init__.py
-│   │   │   └── config.py      # 项目配置（环境变量、路径、常量）
-│   │   ├── models/            # 数据模型（Pydantic Schema）
-│   │   │   └── __init__.py
+│   │   │   └── config.py      # 项目配置
+│   │   ├── models/            # 数据模型
+│   │   │   ├── __init__.py
+│   │   │   └── novel.py       # 小说数据模型
 │   │   ├── services/          # 业务逻辑层
-│   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── novel_service.py  # 小说服务
 │   │   └── utils/             # 工具函数
-│   │       └── __init__.py
+│   │       ├── __init__.py
+│   │       └── txt_parser.py  # TXT解析器
 │   ├── storage/               # 数据持久化存储
-│   │   ├── knowledge_graph/   # 知识图谱数据（graph.json）
-│   │   ├── rag/               # RAG向量库（FAISS索引、chunks元数据）
-│   │   ├── novels/            # 上传的小说原始文件（TXT/DOCX）
-│   │   └── scripts/           # 生成的YAML剧本文件
+│   │   └── novels/            # 小说文件和元数据
 │   ├── main.py                # FastAPI 应用入口
 │   ├── requirements.txt       # Python 依赖包列表
 │   └── .env.example           # 环境变量模板
 │
 ├── frontend/                   # Vue3 前端应用
 │   ├── src/
-│   │   ├── api/               # Axios API 请求封装
-│   │   │   └── index.ts
+│   │   ├── api/               # API 请求封装
+│   │   │   ├── request.ts     # axios实例
+│   │   │   └── novel.ts       # 小说接口
 │   │   ├── components/        # 公共组件目录
 │   │   ├── router/            # Vue Router 路由配置
 │   │   │   └── index.ts
 │   │   ├── stores/            # Pinia 状态管理
 │   │   │   └── index.ts
 │   │   ├── types/             # TypeScript 类型定义
-│   │   │   └── index.ts       # 全局共享类型（Chapter、Character、Script等）
+│   │   │   └── index.ts
 │   │   ├── utils/             # 工具函数
 │   │   │   └── index.ts
 │   │   ├── views/             # 页面视图组件
 │   │   │   ├── HomeView.vue           # 首页
-│   │   │   ├── UploadView.vue         # 小说上传页
+│   │   │   ├── BookshelfView.vue      # 书架页（上传/列表）
+│   │   │   ├── NovelDetailView.vue    # 小说详情页
 │   │   │   ├── KnowledgeGraphView.vue # 知识图谱展示页
 │   │   │   └── ScriptView.vue         # 剧本生成页
 │   │   ├── App.vue            # 根组件
@@ -81,63 +108,9 @@ ScriptGraph-RAG/
 │   ├── tsconfig.json          # TypeScript 配置
 │   └── tsconfig.node.json     # Node 端 TS 配置
 │
-└── 设计文档.md                 # 详细设计文档
+└── 原型图/                     # UI原型设计
+    └── index.html             # 原型图预览
 ```
-
----
-
-## 文件夹作用详解
-
-### backend/app/api/
-存放 FastAPI 的路由定义，按功能模块划分：
-- 小说上传接口
-- 章节解析接口
-- 知识图谱查询接口
-- 剧本生成接口
-
-### backend/app/core/
-核心配置模块：
-- **config.py**: 集中管理项目配置，包括数据库路径、API密钥、RAG参数等
-- 使用 Pydantic Settings 实现环境变量加载和验证
-
-### backend/app/models/
-Pydantic 数据模型定义：
-- 请求/响应 Schema
-- 数据库模型
-- 共享数据结构
-
-### backend/app/services/
-业务逻辑层：
-- 小说解析服务
-- 实体抽取服务
-- 知识图谱构建服务
-- RAG检索服务
-- 剧本生成服务
-
-### backend/app/utils/
-通用工具函数：
-- 文件读写
-- 文本处理
-- 数据转换
-
-### backend/storage/
-数据持久化目录，按类型分文件夹存储：
-- **knowledge_graph/**: 知识图谱的节点和边数据（JSON格式）
-- **rag/**: FAISS向量索引和Chunk摘要数据
-- **novels/**: 用户上传的小说原始文件
-- **scripts/**: 生成的YAML格式剧本
-
-### frontend/src/types/
-TypeScript 类型定义中心：
-- 与后端API对接的数据接口
-- 组件间共享的类型
-- 知识图谱、剧本等核心数据结构定义
-
-### frontend/src/views/
-页面级组件，对应路由：
-- **UploadView**: 小说文件上传、章节解析
-- **KnowledgeGraphView**: 使用 Cytoscape.js 展示人物关系网络
-- **ScriptView**: YAML剧本展示和预览
 
 ---
 
@@ -181,6 +154,21 @@ npm run dev
 
 ---
 
+## API 接口
+
+### 小说接口
+
+| 方法 | 路径 | 说明 |
+|-----|------|------|
+| GET | `/api/v1/novels` | 获取小说列表 |
+| POST | `/api/v1/novels/upload` | 上传小说文件 |
+| GET | `/api/v1/novels/{id}` | 获取小说详情 |
+| DELETE | `/api/v1/novels/{id}` | 删除小说 |
+| GET | `/api/v1/novels/{id}/chapters` | 获取章节列表 |
+| GET | `/api/v1/novels/{id}/chapters/{chapter_id}` | 获取章节内容 |
+
+---
+
 ## 环境变量配置
 
 复制 `backend/.env.example` 为 `backend/.env`，并填写：
@@ -197,46 +185,19 @@ QWEN_API_BASE=https://dashscope.aliyuncs.com/api/v1
 
 ---
 
-## 核心功能模块
-
-| 模块 | 功能描述 |
-|-----|---------|
-| 小说上传 | 支持 TXT/DOCX 格式，自动保存到 storage/novels/ |
-| 章节解析 | 自动识别"第一章"等标题进行切分 |
-| 实体抽取 | 从文本中提取人物、地点、事件 |
-| 知识图谱 | 构建人物关系网络，存储为 graph.json |
-| RAG检索 | 文本分块、生成摘要、构建FAISS向量索引 |
-| 剧本生成 | 结合知识图谱和RAG上下文调用LLM生成YAML剧本 |
-
----
-
-## 数据流
-
-```
-小说文件 → 章节解析 → 实体抽取 → 知识图谱构建
-                                      ↓
-                              RAG知识库构建
-                                      ↓
-                         ┌────────────┴────────────┐
-                         ↓                         ↓
-                    知识图谱数据               RAG检索结果
-                         └────────────┬────────────┘
-                                      ↓
-                              Prompt增强模块
-                                      ↓
-                              LLM剧本生成
-                                      ↓
-                              YAML剧本输出
-```
-
----
-
 ## 开发计划
 
-详见 [设计文档.md](设计文档.md) 第11章
+- [x] 书架管理（上传/列表/删除）
+- [x] TXT 文件解析（多编码支持）
+- [x] 章节智能识别
+- [x] 小说阅读器
+- [ ] 知识图谱构建
+- [ ] RAG 知识库
+- [ ] AI 剧本生成
+- [ ] YAML 剧本编辑
 
 ---
 
-## License
+## 许可证
 
-MIT
+MIT License

@@ -11,6 +11,11 @@ const api = axios.create({
 // 请求拦截器
 api.interceptors.request.use(
   (config) => {
+    // 如果是 FormData，删除 Content-Type，让浏览器自动设置
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type']
+      console.log('DEBUG: Request headers=', config.headers)
+    }
     return config
   },
   (error) => {
