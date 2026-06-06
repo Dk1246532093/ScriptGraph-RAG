@@ -42,33 +42,21 @@
         </div>
       </div>
 
-      <!-- 生成配置区域 -->
-      <!-- <div class="section">
-        <h2 class="section-title">生成配置</h2>
-        <el-form :model="config" label-position="top">
-          <el-form-item label="剧本风格">
-            <el-select v-model="config.style" placeholder="请选择剧本风格" style="width: 100%">
-              <el-option label="古装武侠" value="wuxia" />
-              <el-option label="现代都市" value="modern" />
-              <el-option label="玄幻修仙" value="fantasy" />
-              <el-option label="悬疑推理" value="mystery" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="角色设定">
-            <el-input v-model="config.characters" type="textarea" :rows="3" placeholder="请输入主要角色设定，如：主角性格、外貌特征等" />
-          </el-form-item>
-          <el-form-item label="特殊要求">
-            <el-input v-model="config.requirements" type="textarea" :rows="3" placeholder="请输入特殊要求，如：对话风格、场景描写重点等" />
-          </el-form-item>
-        </el-form>
-      </div> -->
-
       <!-- 生成按钮 -->
       <div class="generate-section">
         <el-button type="primary" size="large" :disabled="selectedChapters.size === 0 || generating"
           :loading="generating" @click="handleGenerateScript">
           {{ generating ? '生成中...' : '生成剧本' }}
         </el-button>
+      </div>
+
+      <!-- 知识图谱展示区域 -->
+      <div v-if="knowledgeGraph.nodes.length > 0" class="section">
+        <h2 class="section-title">知识图谱</h2>
+        <KnowledgeGraph 
+          :nodes="knowledgeGraph.nodes" 
+          :edges="knowledgeGraph.edges"
+        />
       </div>
     </div>
   </div>
@@ -80,6 +68,7 @@
   import { ElMessage } from 'element-plus'
   import { getNovelDetail, getNovelChapters } from '@/api/novel'
   import { generateScript } from '@/api/script'
+  import KnowledgeGraph from '@/components/KnowledgeGraph.vue'
 
   const route = useRoute()
   const router = useRouter()
@@ -96,6 +85,12 @@
     style: '',
     characters: '',
     requirements: ''
+  })
+
+  // 知识图谱数据
+  const knowledgeGraph = ref({
+    nodes: [] as any[],
+    edges: [] as any[]
   })
 
   // 计算已选择的章节范围文本
@@ -152,7 +147,7 @@
         getNovelChapters(id)
       ])
 
-      novelTitle.value = novelRes.title
+      novelTitle.value = (novelRes as any).title || '未知小说'
       chapters.value = chaptersRes.data || chaptersRes || []
 
       // 默认选择前10章
@@ -212,7 +207,7 @@
 
     try {
       const selectedChapterIds = Array.from(selectedChapters.value)
-      const res = await generateScript({
+      const res: any = await generateScript({
         novel_id: novelId.value,
         chapter_ids: selectedChapterIds,
         config: {
@@ -222,11 +217,13 @@
         }
       })
 
-      ElMessage.success('剧本生成任务已创建')
+      ElMessage.success('剧本生成成功，知识图谱已提取')
       console.log('生成结果：', res)
 
-      // TODO: 跳转到剧本编辑页面或显示生成进度
-      // router.push(`/script-edit?scriptId=${res.script_id}`)
+      // 保存知识图谱数据
+      if (res.knowledge_graph) {
+        knowledgeGraph.value = res.knowledge_graph
+      }
     } catch (error: any) {
       ElMessage.error(error.response?.data?.detail || '生成剧本失败')
       console.error(error)
