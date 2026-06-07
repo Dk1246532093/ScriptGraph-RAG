@@ -15,7 +15,16 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:8000',
-        changeOrigin: true
+        changeOrigin: true,
+        // 支持 SSE 流式响应，禁用缓冲
+        configure: (proxy, options) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            // 确保请求头支持流式传输
+            if (req.headers.accept === 'text/event-stream') {
+              proxyReq.setHeader('Accept', 'text/event-stream')
+            }
+          })
+        }
       }
     }
   }
