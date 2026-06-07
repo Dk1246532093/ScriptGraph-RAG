@@ -36,3 +36,10 @@ temp/
 
 # Storage results
 backend/storage/result/
+
+# Media files
+*.mp4
+*.avi
+*.mov
+*.mkv
+项目讲解.mp4
