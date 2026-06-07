@@ -1,0 +1,1297 @@
+script:
+  metadata:
+    title: 未知小说 - 剧本
+    novel_title: 未知小说
+    novel_id: 016be9fe-3dd0-4fbd-9087-e8c73b020cc9
+    script_id: 356aed9f
+    export_time: '2026-06-07T21:40:05.162631'
+    format_version: '1.0'
+  statistics:
+    scene_count: 5
+    beat_count: 28
+    line_count: 121
+    character_count: 20
+    character_appearances:
+      白马李三: 9
+      上官虹: 7
+      李文秀: 25
+      白马: 3
+      霍元龙: 8
+      史仲俊: 3
+      众喽啰: 2
+      陈达海: 8
+      风沙: 1
+      众盗贼: 1
+      丁同: 17
+      计老人: 27
+      群豪甲: 1
+      哈萨克妇女: 1
+      群豪乙: 1
+      哈萨克族长: 2
+      哈萨克精壮男子: 1
+      哈萨克男子甲: 1
+      哈萨克男子乙: 1
+      苏鲁克: 1
+  scenes:
+  - scene_number: 1
+    scene_id: scene_1
+    title: 大漠追杀
+    location: 回疆大漠
+    summary: 白马李三一家被吕梁三杰追杀，李三中箭、红马倒毙，三人共骑逃亡；李三断后，装死反击最终战死；上官虹用金剑银剑杀死史仲俊后殉夫；李文秀独自逃亡，追兵紧追；大风沙骤起，众人陷入求生困境。
+    beats:
+    - beat_number: 1
+      beat_id: beat_1
+      title: 红马倒毙
+      theme: 逃亡
+      location: 回疆大漠，沙丘连绵
+      atmosphere: 紧张、悲壮
+      characters:
+      - 白马李三
+      - 上官虹
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 白马李三
+        expression: 痛苦、疲惫
+        action: 伏在枣红马背上，左手紧抓缰绳，右手捂着背心箭伤
+        voice:
+          emotion: 隐忍
+          tone: 喘息
+      - line_number: 2
+        character: 白马李三
+        expression: 绝望
+        action: 用力一提缰绳，马哀嘶倒地，他从马背上滚落，单膝跪地
+        voice:
+          emotion: 无奈
+          tone: 低沉
+      - line_number: 3
+        character: 上官虹
+        expression: 惊恐
+        action: 回头见状，圈转白马，跳下马快步跑到李三身边
+        dialogue: 大哥……怎……怎么啦？
+        voice:
+          emotion: 震惊
+          tone: 颤抖
+      - line_number: 4
+        character: 李文秀
+        expression: 恐惧
+        action: 从母亲怀里探出头，看到父亲背上的箭，失声尖叫
+        dialogue: 爹，爹，你背上有箭！
+        voice:
+          emotion: 惊慌
+          tone: 尖锐
+    - beat_number: 2
+      beat_id: beat_2
+      title: 三人共骑
+      theme: 逃亡
+      location: 大漠，红马尸体旁
+      atmosphere: 紧张、坚定
+      characters:
+      - 白马李三
+      - 上官虹
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 白马李三
+        expression: 坚毅
+        action: 一跃而起，轻捷地落在妻子身后马鞍上，双腿夹紧马腹
+        dialogue: 不碍事！走！
+        voice:
+          emotion: 决绝
+          tone: 快速
+      - line_number: 2
+        character: 上官虹
+        expression: 担忧
+        action: 回头深深望了丈夫一眼，扯起缰绳
+        dialogue: 大哥，你……
+        voice:
+          emotion: 关切
+          tone: 轻柔
+      - line_number: 3
+        character: 白马
+        action: 四蹄翻飞，奋力向前疾驰，尘土飞扬
+        voice:
+          emotion: ''
+          tone: ''
+    - beat_number: 3
+      beat_id: beat_3
+      title: 李三断后
+      theme: 牺牲
+      location: 大漠，白马渐慢
+      atmosphere: 绝望、悲壮
+      characters:
+      - 白马李三
+      - 上官虹
+      - 李文秀
+      - 追兵（远景）
+      lines:
+      - line_number: 1
+        character: 白马李三
+        expression: 凝重
+        action: 回头望向滚滚黄尘，追兵面目渐渐清晰
+        dialogue: 虹妹，我求你一件事，你答不答应？
+        voice:
+          emotion: 坚定
+          tone: 低沉
+      - line_number: 2
+        character: 上官虹
+        expression: 温柔
+        action: 回头微笑，眼中含泪
+        dialogue: 这一生之中，我违拗过你一次么？
+        voice:
+          emotion: 深情
+          tone: 柔和
+      - line_number: 3
+        character: 白马李三
+        expression: 决绝
+        action: 低头亲了亲妻子的左颊，声音变得温柔
+        dialogue: 你带了秀儿逃命，保全咱两个的骨血，保全这幅高昌迷宫的地图。
+        voice:
+          emotion: 爱恋
+          tone: 轻声
+      - line_number: 4
+        character: 上官虹
+        expression: 惊恐、悲伤
+        action: 摇头，声音发颤
+        dialogue: 大哥，把地图给了他们，咱们认输便是。你……你的身子要紧。
+        voice:
+          emotion: 反对
+          tone: 颤抖
+      - line_number: 5
+        character: 白马李三
+        expression: 坚定
+        action: 不理会妻子，拔出腰间短剑，翻身下马，用力一拍马臀
+        dialogue: 走！
+        voice:
+          emotion: 命令
+          tone: 严厉
+    - beat_number: 4
+      beat_id: beat_4
+      title: 装死反击
+      theme: 牺牲、战斗
+      location: 大漠，沙丘后
+      atmosphere: 激烈、悲壮
+      characters:
+      - 白马李三
+      - 霍元龙
+      - 史仲俊
+      - 陈达海
+      - 众喽啰
+      lines:
+      - line_number: 1
+        character: 白马李三
+        expression: 决绝
+        action: 藏身沙丘后，强忍疼痛，将背心箭折断，伏地不动假装死去
+        voice:
+          emotion: 冷静
+          tone: 低语
+      - line_number: 2
+        character: 霍元龙
+        expression: 得意
+        action: 策马走近，发现李三尸体，勒马停下
+        dialogue: 哼，白马李三也不过如此！
+        voice:
+          emotion: 轻蔑
+          tone: 大声
+      - line_number: 3
+        character: 史仲俊
+        expression: 警惕
+        action: 持枪缓缓靠近，观察
+        dialogue: 小心有诈。
+        voice:
+          emotion: 怀疑
+          tone: 低沉
+      - line_number: 4
+        character: 白马李三
+        expression: 凶狠
+        action: 突然暴起，短剑闪电般刺向霍元龙马腿，同时翻身滚开
+        dialogue: 拿命来！
+        voice:
+          emotion: 暴怒
+          tone: 大喝
+      - line_number: 5
+        character: 霍元龙
+        expression: 惊愕
+        action: 马匹受惊前蹄扬起，他挥刀格挡，但李三剑势已到，刺中他大腿
+        dialogue: 啊！
+        voice:
+          emotion: 愤怒
+          tone: 惨叫
+      - line_number: 6
+        character: 众喽啰
+        expression: 慌乱
+        action: 蜂拥而上，刀剑齐施
+        dialogue: 杀了他！
+        voice:
+          emotion: 嘈杂
+          tone: 喊杀
+      - line_number: 7
+        character: 白马李三
+        expression: 不屈
+        action: 身中数刀，仍奋力拼杀，最终力竭倒下
+        dialogue: 虹妹……秀儿……
+        voice:
+          emotion: 悲壮
+          tone: 微弱
+    - beat_number: 5
+      beat_id: beat_5
+      title: 上官虹殉夫
+      theme: 爱情、牺牲
+      location: 大漠，李三尸体旁
+      atmosphere: 悲壮、凄美
+      characters:
+      - 上官虹
+      - 史仲俊
+      - 李文秀（远景）
+      - 陈达海
+      - 追兵
+      lines:
+      - line_number: 1
+        character: 上官虹
+        expression: 悲痛欲绝
+        action: 远远看到丈夫倒地，泪如雨下，翻身下马，抽出金剑银剑
+        dialogue: 大哥！
+        voice:
+          emotion: 凄厉
+          tone: 哭泣
+      - line_number: 2
+        character: 史仲俊
+        expression: 贪婪、得意
+        action: 策马靠近，看着上官虹
+        dialogue: 三娘子，别来无恙？只要你跟我，保你母女平安。
+        voice:
+          emotion: 轻浮
+          tone: 阴阳怪气
+      - line_number: 3
+        character: 上官虹
+        expression: 厌恶、决绝
+        action: 冷笑一声，双手持剑交叉，冲向史仲俊
+        dialogue: 你做梦！
+        voice:
+          emotion: 仇恨
+          tone: 冰冷
+      - line_number: 4
+        character: 史仲俊
+        expression: 惊讶
+        action: 举枪格挡，但上官虹身形轻灵，金剑银剑交错，一剑刺入他胸口
+        dialogue: 你……
+        voice:
+          emotion: 难以置信
+          tone: 呻吟
+      - line_number: 5
+        character: 上官虹
+        expression: 解脱
+        action: 拔出双剑，鲜血溅身，随即反转剑刃刺入自己心口，倒向丈夫遗体
+        dialogue: 大哥，我来陪你了。
+        voice:
+          emotion: 平静
+          tone: 轻语
+      - line_number: 6
+        character: 陈达海
+        expression: 震惊、愤怒
+        action: 下马跑过来，看到史仲俊已死，拔出青蟒剑
+        dialogue: 二哥！三娘子！
+        voice:
+          emotion: 暴怒
+          tone: 吼叫
+    - beat_number: 6
+      beat_id: beat_6
+      title: 孤女逃亡
+      theme: 逃亡
+      location: 大漠，白马旁
+      atmosphere: 紧张、孤独
+      characters:
+      - 李文秀
+      - 白马
+      - 陈达海
+      - 众喽啰
+      lines:
+      - line_number: 1
+        character: 李文秀
+        expression: 惊恐、无助
+        action: 跌跌撞撞跑向白马，爬不上马鞍，转头看追兵逼近
+        dialogue: 娘！娘！
+        voice:
+          emotion: 哭喊
+          tone: 尖锐
+      - line_number: 2
+        character: 白马
+        action: 低鸣，用头轻推小姑娘，示意她上来
+        voice:
+          emotion: ''
+          tone: ''
+      - line_number: 3
+        character: 李文秀
+        expression: 咬牙
+        action: 抓住马鞍，拼命翻身上马，伏在马背上，双腿乱踢
+        dialogue: 走啊！快走！
+        voice:
+          emotion: 焦急
+          tone: 叫喊
+      - line_number: 4
+        character: 白马
+        action: 嘶鸣一声，撒蹄狂奔，卷起黄沙
+        voice:
+          emotion: ''
+          tone: ''
+      - line_number: 5
+        character: 陈达海
+        expression: 气急败坏
+        action: 上马带领喽啰追赶，挥刀大喊
+        dialogue: 追！别让那小丫头跑了！地图还在她身上！
+        voice:
+          emotion: 愤怒
+          tone: 大喊
+    - beat_number: 7
+      beat_id: beat_7
+      title: 大风沙
+      theme: 求生
+      location: 大漠，狂风沙暴
+      atmosphere: 毁灭、绝望
+      characters:
+      - 李文秀
+      - 陈达海
+      - 众喽啰
+      lines:
+      - line_number: 1
+        character: 李文秀
+        expression: 害怕、坚定
+        action: 回头见追兵越来越近，白马口吐白沫，突然天色昏暗，大风骤起
+        dialogue: 啊！
+        voice:
+          emotion: 惊慌
+          tone: 尖叫
+      - line_number: 2
+        character: 陈达海
+        expression: 惊恐
+        action: 勒马，黄沙扑面，视线模糊
+        dialogue: 不好！是大风沙！快找地方躲避！
+        voice:
+          emotion: 恐惧
+          tone: 大喊
+      - line_number: 3
+        character: 众喽啰
+        expression: 慌乱
+        action: 人仰马翻，四处乱跑，被风沙淹没
+        dialogue: 救命！我看不见了！
+        voice:
+          emotion: 惨叫
+          tone: 杂乱
+      - line_number: 4
+        character: 李文秀
+        expression: 绝望
+        action: 紧紧抱住马颈，风沙如刀割面，白马哀鸣着挣扎前行
+        dialogue: 娘！爹！
+        voice:
+          emotion: 恐惧
+          tone: 哭喊
+      - line_number: 5
+        character: 陈达海
+        expression: 不甘
+        action: 用布蒙住口鼻，伏在马背上，艰难前行
+        dialogue: 等我躲过风沙，一定要抓住那小丫头！
+        voice:
+          emotion: 执着
+          tone: 咬牙切齿
+      - line_number: 6
+        character: 风沙
+        action: 铺天盖地，沙粒击打，天地混沌一片
+        voice:
+          emotion: ''
+          tone: 呼啸
+  - scene_number: 2
+    scene_id: scene_2
+    title: 风沙过后与发现绿洲
+    location: 大漠与绿洲
+    summary: 风沙之后，马贼清点损失，发现小女孩失踪。霍元龙悬赏搜索。丁同独自向西北搜索，发现绿洲，找到白马并接近草棚，与计老人相遇。
+    beats:
+    - beat_number: 1
+      beat_id: beat_1
+      title: 风暴后清点与李文秀失踪
+      theme: 损失与悬疑
+      location: 大漠中
+      atmosphere: 疲惫、沉重、紧张
+      characters:
+      - 霍元龙
+      - 陈达海
+      - 众喽啰
+      lines:
+      - line_number: 1
+        character: 霍元龙
+        expression: 阴沉地抖落身上沙子
+        action: 环视四周，清点人数
+        dialogue: 都起来，看看少了多少人！
+        voice:
+          emotion: 焦躁
+          tone: 低沉
+      - line_number: 2
+        character: 陈达海
+        expression: 灰头土脸，数着人头
+        action: 从沙中爬起，拍打衣服
+        dialogue: 大哥，死了两个兄弟，五匹马。
+        voice:
+          emotion: 疲惫
+          tone: 沙哑
+      - line_number: 3
+        character: 霍元龙
+        expression: 眉头紧锁
+        action: 扫视人群，目光锐利
+        dialogue: 那白马上的小丫头呢？
+        voice:
+          emotion: 恼怒
+          tone: 严厉
+      - line_number: 4
+        character: 陈达海
+        expression: 面色难看
+        action: 摇头，指向空旷沙漠
+        dialogue: 怕是……葬在风沙里了。
+        voice:
+          emotion: 无奈
+          tone: 低声
+    - beat_number: 2
+      beat_id: beat_2
+      title: 霍元龙悬赏搜索
+      theme: 贪欲与命令
+      location: 大漠营地
+      atmosphere: 喧嚣、贪婪、狂热
+      characters:
+      - 霍元龙
+      - 众盗贼
+      lines:
+      - line_number: 1
+        character: 霍元龙
+        expression: 目光凌厉，扫视众人
+        action: 举起一只手，提高声音
+        dialogue: 兄弟们听着！谁发现白马和小女孩的踪迹，赏黄金五十两！
+        voice:
+          emotion: 决断
+          tone: 高亢
+      - line_number: 2
+        character: 众盗贼
+        expression: 群情激动，眼中放光
+        action: 欢呼呼啸，纷纷上马
+        dialogue: 白马！小女孩！五十两黄金！
+        voice:
+          emotion: 贪婪
+          tone: 嘈杂
+      - line_number: 3
+        character: 霍元龙
+        expression: 满意地点头
+        action: 挥手指向四方
+        dialogue: 各自散开搜索，天黑时正西六十里会合！
+        voice:
+          emotion: 威严
+          tone: 命令
+    - beat_number: 3
+      beat_id: beat_3
+      title: 丁同发现绿洲
+      theme: 孤寂与希望
+      location: 大漠沙丘
+      atmosphere: 孤独、惊喜、急迫
+      characters:
+      - 丁同
+      lines:
+      - line_number: 1
+        character: 丁同
+        expression: 神色疲惫，但眼中闪着精光
+        action: 纵马冲上沙丘，勒马远眺
+        dialogue: 哈！绿洲！这么大一片！
+        voice:
+          emotion: 惊喜
+          tone: 自言自语
+      - line_number: 2
+        character: 丁同
+        expression: 精神一振
+        action: 拍马加速，坐骑也兴奋地奔跑
+        dialogue: 快！有草有水了！
+        voice:
+          emotion: 急切
+          tone: 命令
+      - line_number: 3
+        character: 丁同
+        expression: 警惕地观察
+        action: 放慢速度，接近绿洲边缘
+        dialogue: 这么多帐篷……哈萨克人？
+        voice:
+          emotion: 谨慎
+          tone: 低声
+    - beat_number: 4
+      beat_id: beat_4
+      title: 丁同找到白马，靠近草棚
+      theme: 目标出现
+      location: 绿洲边缘，草棚前
+      atmosphere: 警惕、暗中观察
+      characters:
+      - 丁同
+      lines:
+      - line_number: 1
+        character: 丁同
+        expression: 眯起眼睛，仔细打量
+        action: 远远望见孤零零的草棚，勒马慢行
+        dialogue: 这屋子……倒像汉人的样式。
+        voice:
+          emotion: 探究
+          tone: 自语
+      - line_number: 2
+        character: 丁同
+        expression: 惊喜地睁大眼睛
+        action: 看到棚边白马，压低身子
+        dialogue: 白马！果然在这里！
+        voice:
+          emotion: 激动
+          tone: 压低声音
+      - line_number: 3
+        character: 丁同
+        expression: 面色凝重
+        action: 翻身下马，手按刀柄，慢慢靠近
+        dialogue: 小心驶得万年船……
+        voice:
+          emotion: 紧张
+          tone: 轻声
+    - beat_number: 5
+      beat_id: beat_5
+      title: 丁同与计老人相遇
+      theme: 对峙与猜疑
+      location: 草棚门前
+      atmosphere: 警惕、试探、敌意
+      characters:
+      - 丁同
+      - 计老人
+      lines:
+      - line_number: 1
+        character: 计老人
+        expression: 面容苍老，眼神锐利
+        action: 听到动静，从草棚走出，挡在门口
+        dialogue: 这位客人，从哪儿来？
+        voice:
+          emotion: 警惕
+          tone: 迟缓而沉稳
+      - line_number: 2
+        character: 丁同
+        expression: 堆起笑容，但目光闪烁
+        action: 拱手行礼，眼神瞟向白马
+        dialogue: 老人家，在下路经此地，想讨口水喝。这白马……是您的？
+        voice:
+          emotion: 试探
+          tone: 客气
+      - line_number: 3
+        character: 计老人
+        expression: 面色不变，微微摇头
+        action: 挡在白马前面
+        dialogue: 不是我的。野马，自己跑来的。
+        voice:
+          emotion: 冷静
+          tone: 平淡
+      - line_number: 4
+        character: 丁同
+        expression: 眼中闪过一丝不信
+        action: 上前一步，手不离刀柄
+        dialogue: 哦？这大漠里，野马可不多见。
+        voice:
+          emotion: 怀疑
+          tone: 语气加重
+      - line_number: 5
+        character: 计老人
+        expression: 神色不变，但手已缩回袖中
+        action: 微微侧身，挡住门口
+        dialogue: 客人若想喝水，棚里有。若问白马，老汉无可奉告。
+        voice:
+          emotion: 威慑
+          tone: 低沉
+  - scene_number: 3
+    scene_id: scene_3
+    title: 丁同闯入小屋
+    location: 回疆绿洲草滩上的小屋内外
+    summary: 丁同发现白马，窥探小屋，与计老人对峙后进屋，李文秀认出丁同是追兵打碎茶碗，丁同假称有人来袭偷袭计老人，计老人反击杀死丁同，受伤后怒斥李文秀关心，安慰李文秀并为她换装改扮。
+    beats:
+    - beat_number: 1
+      beat_id: beat_1
+      title: 丁同发现白马并窥探小屋
+      theme: 发现与潜伏
+      location: 小屋外草滩
+      atmosphere: 紧张、诡秘
+      characters:
+      - 丁同
+      - 白马
+      lines:
+      - line_number: 1
+        character: 丁同
+        expression: 阴鸷、警觉
+        action: 翻身下马，从靴筒抽出短刀，笼在左袖中，悄悄掩向小屋后面，探头向窗子张望
+        voice:
+          emotion: 紧张
+          tone: 无声
+      - line_number: 2
+        character: 丁同
+        expression: 恼怒
+        action: 被白马嘶叫声惊动，定神，再度探头望窗
+        dialogue: 畜牲！
+        voice:
+          emotion: 愤怒
+          tone: 低声咒骂
+    - beat_number: 2
+      beat_id: beat_2
+      title: 丁同与计老人对峙并进屋
+      theme: 对峙与试探
+      location: 小屋窗外、门口
+      atmosphere: 紧张、僵持
+      characters:
+      - 丁同
+      - 计老人
+      lines:
+      - line_number: 1
+        character: 计老人
+        expression: 冰冷、警觉
+        action: 窗内突然探出头，与丁同鼻子相碰，目光炯炯
+        dialogue: 是谁？
+        voice:
+          emotion: 警惕
+          tone: 冷厉
+      - line_number: 2
+        character: 丁同
+        expression: 惊愕后迅速堆笑
+        action: 双足一点倒纵出去，站稳后拱手陪笑
+        dialogue: 在下姓丁名同，无意间到此，惊动了老丈。请问老丈高姓大名。
+        voice:
+          emotion: 故作镇定
+          tone: 谄媚
+      - line_number: 3
+        character: 计老人
+        expression: 冷淡、审视
+        action: 不接话，上下打量丁同
+        dialogue: 老汉姓计。你有多少人同来？
+        voice:
+          emotion: 冷淡
+          tone: 平直
+      - line_number: 4
+        character: 丁同
+        expression: 谄笑中带着不安
+        action: 被计老人眼光盯得心神不定，强笑
+        dialogue: 便是在下一人在此。
+        voice:
+          emotion: 强作镇定
+          tone: 讨好
+      - line_number: 5
+        character: 计老人
+        expression: 冷笑
+        action: 哼了一声，眼光在丁同脸上来回扫视
+        dialogue: 要喝茶，便走大门，不用爬窗子吧！
+        voice:
+          emotion: 怀疑
+          tone: 讥讽
+      - line_number: 6
+        character: 丁同
+        expression: 尴尬的笑
+        action: 转身绕到门前，走进小屋
+        dialogue: 是，是！
+        voice:
+          emotion: 尴尬
+          tone: 附和
+    - beat_number: 3
+      beat_id: beat_3
+      title: 李文秀认出丁同是追兵并打碎茶碗
+      theme: 恐惧与暴露
+      location: 小屋堂内
+      atmosphere: 紧张、突然
+      characters:
+      - 计老人
+      - 丁同
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 计老人
+        expression: 不动声色
+        action: 引丁同坐下，目光警觉地扫视房间
+      - line_number: 2
+        character: 李文秀
+        expression: 惊恐
+        action: 从后堂捧出一碗茶，看到丁同后手一颤，茶碗落地摔碎
+        dialogue: 啊！
+        voice:
+          emotion: 恐惧
+          tone: 尖叫
+      - line_number: 3
+        character: 丁同
+        expression: 大喜过望
+        action: 眼中放出光芒，紧盯李文秀
+        dialogue: 果然是她！
+        voice:
+          emotion: 狂喜
+          tone: 低声自语
+    - beat_number: 4
+      beat_id: beat_4
+      title: 丁同假称有人来袭偷袭计老人
+      theme: 欺骗与偷袭
+      location: 小屋堂内
+      atmosphere: 紧张、突变
+      characters:
+      - 丁同
+      - 计老人
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 丁同
+        expression: 故作惊慌
+        action: 突然转身指向窗外，大喊
+        dialogue: 窗外有人！
+        voice:
+          emotion: 假装的恐慌
+          tone: 急促
+      - line_number: 2
+        character: 计老人
+        expression: 一凛，迅速转头看向窗外
+        action: 扭头瞬间露出破绽
+      - line_number: 3
+        character: 丁同
+        expression: 凶光毕露
+        action: 趁计老人转头，抽刀从背后猛刺
+        dialogue: 去死吧！
+        voice:
+          emotion: 凶狠
+          tone: 咬牙切齿
+    - beat_number: 5
+      beat_id: beat_5
+      title: 计老人反击杀死丁同
+      theme: 反击与杀戮
+      location: 小屋堂内
+      atmosphere: 激烈、血腥
+      characters:
+      - 计老人
+      - 丁同
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 计老人
+        expression: 沉着、冷酷
+        action: 身形一矮，避开刀锋，反手一掌击中丁同手腕，短刀脱手，随即一指点中丁同喉头
+        dialogue: 鼠辈！
+        voice:
+          emotion: 冷静
+          tone: 冷厉
+      - line_number: 2
+        character: 丁同
+        expression: 惊骇、痛苦
+        action: 喉咙被点中，鲜血涌出，捂住脖子倒下
+        dialogue: 呃……你……
+        voice:
+          emotion: 绝望
+          tone: 嘶哑
+      - line_number: 3
+        character: 李文秀
+        expression: 吓得缩在角落
+        action: 双手捂住眼睛，不敢看
+      - line_number: 4
+        character: 计老人
+        expression: 厌恶地
+        action: 踢了踢丁同尸体，确认死亡
+        dialogue: 哼！
+        voice:
+          emotion: 冷漠
+          tone: 轻蔑
+    - beat_number: 6
+      beat_id: beat_6
+      title: 计老人受伤后怒斥李文秀关心
+      theme: 受伤与倔强
+      location: 小屋堂内
+      atmosphere: 混乱、关切与冲突
+      characters:
+      - 计老人
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 计老人
+        expression: 痛苦、但强忍
+        action: 捂住腰间伤口，鲜血渗出，踉跄几步
+        dialogue: 唔……
+        voice:
+          emotion: 疼痛
+          tone: 压抑地呻吟
+      - line_number: 2
+        character: 李文秀
+        expression: 担心、害怕
+        action: 跑上前扶住计老人，带着哭腔
+        dialogue: 爷爷，你受伤了！都是因为我……
+        voice:
+          emotion: 焦急
+          tone: 急切
+      - line_number: 3
+        character: 计老人
+        expression: 严厉、烦躁
+        action: 推开李文秀的手，怒视
+        dialogue: 走开！谁要你多事？哭什么哭！
+        voice:
+          emotion: 愤怒
+          tone: 粗暴
+      - line_number: 4
+        character: 李文秀
+        expression: 被吓到，愣住
+        action: 后退两步，泪水在眼眶打转
+      - line_number: 5
+        character: 计老人
+        expression: 稍缓，仍带怒气
+        action: 自己包扎伤口，低声嘟囔
+        dialogue: 若不是为了你这小丫头，我何至于此……
+        voice:
+          emotion: 气恼
+          tone: 嘟囔
+    - beat_number: 7
+      beat_id: beat_7
+      title: 计老人安慰李文秀并为她换装改扮
+      theme: 安慰与伪装
+      location: 小屋堂内
+      atmosphere: 逐渐缓和、温馨
+      characters:
+      - 计老人
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 计老人
+        expression: 疲惫、但柔和
+        action: 包扎好伤口，叹了口气，招手示意李文秀过来
+        dialogue: 孩子，过来。
+        voice:
+          emotion: 无奈与怜爱
+          tone: 温和
+      - line_number: 2
+        character: 李文秀
+        expression: 小心翼翼地走上前
+        action: 擦干眼泪，走近
+      - line_number: 3
+        character: 计老人
+        expression: 慈祥
+        action: 摸了摸她的头，从柜子里拿出一套当地女孩的旧衣服
+        dialogue: 别怕，那些坏人不会再来了。来，把这换上，以后你就扮作回疆的小姑娘。
+        voice:
+          emotion: 温柔
+          tone: 轻声
+      - line_number: 4
+        character: 李文秀
+        expression: 似懂非懂地点点头
+        action: 接过衣服，换上，抬头看向计老人
+        dialogue: 爷爷，我会听话的。
+        voice:
+          emotion: 依赖
+          tone: 怯生生
+      - line_number: 5
+        character: 计老人
+        expression: 微笑，眼中闪过一丝忧虑
+        action: 帮李文秀整理衣领，望向窗外
+        dialogue: 从今往后，你就是我的孙女了。
+        voice:
+          emotion: 复杂
+          tone: 低沉
+  - scene_number: 4
+    scene_id: scene_4
+    title: 群豪夜袭绿洲
+    location: 计老人家及草原帐篷
+    summary: 霍元龙等群豪袭击绿洲，杀死哈萨克人并掳掠，李文秀目睹父母遗物，确知父母遇害。
+    beats:
+    - beat_number: 1
+      beat_id: beat_1
+      title: 计老人磨刀防范
+      theme: 戒备
+      location: 计老人屋内
+      atmosphere: 紧张不安
+      characters:
+      - 计老人
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 计老人
+        expression: 凝重
+        action: 慢慢磨着一把弯刀，刀刃在磨石上发出沙沙声
+        dialogue: 阿秀，今晚恐有大变，你躲在角落里，无论听到什么都别出声。
+        voice:
+          emotion: 警觉
+          tone: 低沉
+      - line_number: 2
+        character: 李文秀
+        expression: 困惑
+        action: 躲在一堆毛毡后，只露出一双眼睛
+        dialogue: 爷爷，是坏人要来了吗？
+        voice:
+          emotion: 担忧
+          tone: 稚嫩
+      - line_number: 3
+        character: 计老人
+        expression: 严肃
+        action: 放下弯刀，走到窗边侧耳倾听
+        dialogue: 别说话，快藏好。
+        voice:
+          emotion: 警惕
+          tone: 低声
+    - beat_number: 2
+      beat_id: beat_2
+      title: 群豪冲进绿洲大肆掳掠
+      theme: 暴行
+      location: 草原帐篷区
+      atmosphere: 混乱、恐怖
+      characters:
+      - 霍元龙
+      - 陈达海
+      - 群豪
+      - 哈萨克族老弱妇孺
+      lines:
+      - line_number: 1
+        character: 霍元龙
+        expression: 凶狠
+        action: 骑马冲入帐篷，挥刀砍断帐篷绳索
+        dialogue: 搜！金银财宝，一个子儿也别留！
+        voice:
+          emotion: 狂躁
+          tone: 高喊
+      - line_number: 2
+        character: 陈达海
+        expression: 贪婪
+        action: 一把揪住一个哈萨克妇女的头发，将她拖倒在地
+        dialogue: 女人带走！老弱废物，全杀了！
+        voice:
+          emotion: 冷酷
+          tone: 命令
+      - line_number: 3
+        character: 群豪甲
+        expression: 狰狞
+        action: 用刀背砸向一个老人的头，老人倒地
+        dialogue: 哈哈，这些蛮子还敢瞪眼！
+        voice:
+          emotion: 残忍
+          tone: 狂笑
+      - line_number: 4
+        character: 哈萨克妇女
+        expression: 惊恐
+        action: 尖叫着被拖走，试图挣扎
+        dialogue: 救命！安拉啊！
+        voice:
+          emotion: 绝望
+          tone: 哭喊
+    - beat_number: 3
+      beat_id: beat_3
+      title: 李文秀扮成哈萨克孩子藏身屋内
+      theme: 伪装
+      location: 计老人屋内角落
+      atmosphere: 压抑、恐惧
+      characters:
+      - 李文秀
+      - 计老人
+      - 群豪（闯入者）
+      lines:
+      - line_number: 1
+        character: 李文秀
+        expression: 惊恐但强作镇定
+        action: 抓了一把泥土抹在脸上，蜷缩在角落的旧毛毡下
+        voice:
+          emotion: 紧张
+          tone: 无声
+      - line_number: 2
+        character: 计老人
+        expression: 沉着
+        action: 挡在李文秀前面，佝偻着身子，假装老迈
+        dialogue: 大爷们，这屋里就我一个老骨头和个娃娃，啥也没有啊。
+        voice:
+          emotion: 伪装
+          tone: 颤抖
+      - line_number: 3
+        character: 群豪乙
+        expression: 不耐烦
+        action: 踢开一只陶罐，四处扫视
+        dialogue: 呸！穷鬼！
+        voice:
+          emotion: 轻蔑
+          tone: 粗声
+    - beat_number: 4
+      beat_id: beat_4
+      title: 李文秀看到父母遗物
+      theme: 揭露
+      location: 计老人屋内
+      atmosphere: 震惊、仇恨
+      characters:
+      - 李文秀
+      - 霍元龙
+      - 陈达海
+      lines:
+      - line_number: 1
+        character: 李文秀
+        expression: 瞳孔骤然收缩
+        action: 从毛毡缝隙中死死盯着霍元龙腰间那把熟悉的佩剑
+        dialogue: 那是……爹爹的剑！
+        voice:
+          emotion: 内心震动
+          tone: 无声嘶喊
+      - line_number: 2
+        character: 霍元龙
+        expression: 得意
+        action: 拍了拍腰间的剑，环顾四周
+        dialogue: 哈哈哈，这把剑得来不易，以后就是我神刀震关西的招牌！
+        voice:
+          emotion: 骄横
+          tone: 大声
+      - line_number: 3
+        character: 陈达海
+        expression: 阴笑
+        action: 随手抽出腰间的金银小剑，把玩着
+        dialogue: 三娘子的剑倒小巧，可惜人却不识相。
+        voice:
+          emotion: 轻佻
+          tone: 慢悠悠
+      - line_number: 4
+        character: 李文秀
+        expression: 泪流满面，牙齿咬得咯咯响
+        action: 死死捂住自己的嘴，不让自己发出声音
+        dialogue: 是他们……杀了爹娘！
+        voice:
+          emotion: 仇恨
+          tone: 内心独白
+    - beat_number: 5
+      beat_id: beat_5
+      title: 哈萨克男子归来组织报仇
+      theme: 复仇
+      location: 草原上帐篷外
+      atmosphere: 悲愤、肃穆
+      characters:
+      - 哈萨克族长
+      - 哈萨克精壮男子
+      - 计老人
+      - 李文秀
+      lines:
+      - line_number: 1
+        character: 哈萨克族长
+        expression: 悲愤交加
+        action: 高举手中的狼尸，重重摔在地上
+        dialogue: 真主的勇士们！我们的家园被强盗践踏，亲人被杀！拿起刀，跟我去找那些汉人报仇！
+        voice:
+          emotion: 愤怒
+          tone: 嘶吼
+      - line_number: 2
+        character: 哈萨克精壮男子
+        expression: 愤怒
+        action: 纷纷举起弯刀，发出怒吼
+        dialogue: 报仇！报仇！
+        voice:
+          emotion: 激昂
+          tone: 齐声
+      - line_number: 3
+        character: 计老人
+        expression: 忧虑
+        action: 拉着李文秀的手，站在远处观望
+        dialogue: 阿秀，别看了……他们找不到了，那群强盗早就跑了。
+        voice:
+          emotion: 无奈
+          tone: 低声
+    - beat_number: 6
+      beat_id: beat_6
+      title: 发现五个被掳妇女及父母尸身
+      theme: 死亡
+      location: 大漠中
+      atmosphere: 惨烈、悲痛
+      characters:
+      - 哈萨克族长
+      - 哈萨克男子
+      - 李文秀
+      - 计老人
+      lines:
+      - line_number: 1
+        character: 哈萨克男子甲
+        expression: 震惊
+        action: 从沙丘后跑出，指着远处
+        dialogue: 族长！那边……有尸体！
+        voice:
+          emotion: 颤抖
+          tone: 大喊
+      - line_number: 2
+        character: 哈萨克族长
+        expression: 沉重
+        action: 走近，看到五具赤裸女尸，脱下外袍盖上去
+        dialogue: 真主惩罚……这些禽兽不如的汉人！
+        voice:
+          emotion: 悲痛
+          tone: 低沉
+      - line_number: 3
+        character: 李文秀
+        expression: 崩溃
+        action: 扑倒在一男一女两具尸身上，认出是父母
+        dialogue: 爹爹！妈妈！
+        voice:
+          emotion: 撕心裂肺
+          tone: 哭喊
+      - line_number: 4
+        character: 哈萨克男子乙
+        expression: 凶狠
+        action: 上前一脚踢开李文秀
+        dialogue: 滚开！你这强盗汉人的种！
+        voice:
+          emotion: 愤怒
+          tone: 粗声
+      - line_number: 5
+        character: 计老人
+        expression: 心痛
+        action: 连忙抱起被踢倒的李文秀，紧紧搂在怀里
+        dialogue: 阿秀不哭，跟爷爷回家……
+        voice:
+          emotion: 悲伤
+          tone: 颤声
+  - scene_number: 5
+    scene_id: scene_5
+    title: 李文秀的悲伤与安慰
+    location: 计老人家
+    summary: 李文秀失去父母后，被计老人收留。夜里她哭醒，老人安慰她，并讲述苏鲁克的悲痛。窗外传来天铃鸟的歌声，老人讲述其传说，给李文秀带来一丝安慰。
+    beats:
+    - beat_number: 1
+      beat_id: beat_1
+      title: 李文秀痛哭父母，被苏鲁克踢骂
+      theme: 悲伤
+      location: 草原上，计老人家外
+      atmosphere: 凄凉、压抑
+      characters:
+      - 李文秀
+      - 苏鲁克
+      lines:
+      - line_number: 1
+        character: 李文秀
+        expression: 痛苦、无助
+        action: 跪在父母尸体旁，双手捧着脸哭泣
+        dialogue: （哭着抬头）为什么……为什么恶人这么多？谁都来欺侮我？
+        voice:
+          emotion: 悲伤
+          tone: 抽泣
+      - line_number: 2
+        character: 苏鲁克
+        expression: 愤怒、悲恸
+        action: 大步走过来，一脚踢向李文秀
+        dialogue: 滚开！汉人都是强盗！真主降罚的强盗汉人！
+        voice:
+          emotion: 愤怒
+          tone: 粗鲁
+      - line_number: 3
+        character: 李文秀
+        expression: 惊恐
+        action: 被踢倒在地，腰上肿起一块，捂着腰哭泣
+        dialogue: （呜咽）我没有……我没有做坏事……
+        voice:
+          emotion: 委屈
+          tone: 哭喊
+    - beat_number: 2
+      beat_id: beat_2
+      title: 计老人抱她回家，夜里安慰并讲述苏鲁克的遭遇
+      theme: 同情
+      location: 计老人家，卧室
+      atmosphere: 温暖、哀伤
+      characters:
+      - 李文秀
+      - 计老人
+      lines:
+      - line_number: 1
+        character: 李文秀
+        expression: 泪流满面
+        action: 从睡梦中哭醒，坐起来，看到床沿上的计老人
+        dialogue: 啊！
+        voice:
+          emotion: 恐惧
+          tone: 惊呼
+      - line_number: 2
+        character: 计老人
+        expression: 慈祥、爱怜
+        action: 伸手温柔地抚摸李文秀的头发
+        dialogue: 别怕，别怕，是爷爷。
+        voice:
+          emotion: 安慰
+          tone: 轻声
+      - line_number: 3
+        character: 李文秀
+        expression: 悲伤
+        action: 伏在计老人怀里，泪水如珍珠断线般流下，哭湿他的衣襟
+        dialogue: （哭着）爷爷……我没了爹娘……
+        voice:
+          emotion: 悲伤
+          tone: 抽泣
+      - line_number: 4
+        character: 计老人
+        expression: 慈祥
+        action: 轻拍李文秀的背
+        dialogue: 孩子，你没了爹娘，就当我是你的亲爷爷，跟我住在一起。爷爷会好好照料你。
+        voice:
+          emotion: 温柔
+          tone: 低沉
+      - line_number: 5
+        character: 李文秀
+        expression: 迷茫
+        action: 抬起头，揉着眼睛
+        dialogue: 为什么谁都来欺侮我？我又没做坏事？
+        voice:
+          emotion: 困惑
+          tone: 天真的语气
+      - line_number: 6
+        character: 计老人
+        expression: 叹息
+        action: 叹口气，从瓦壶里倒了一碗热奶酪递给她
+        dialogue: 这世界上给人欺侮的，总是那些没做坏事的人。秀儿，那个踢了你一脚的人，叫做苏鲁克。他是个正直的好人。
+        voice:
+          emotion: 感慨
+          tone: 低沉缓慢
+      - line_number: 7
+        character: 李文秀
+        expression: 惊讶
+        action: 睁着圆圆的眼珠，接过奶酪碗
+        dialogue: 他……他是好人么？
+        voice:
+          emotion: 疑惑
+          tone: 轻声
+      - line_number: 8
+        character: 计老人
+        expression: 严肃
+        action: 点头，眼神望向远方
+        dialogue: 不错，他是好人。他跟你一样，在一天之中死了两个最亲爱的人——他妻子和大儿子，都让那批恶人害死了。他只道汉人都是坏人。他用哈萨克话骂你，说你是‘真主降罚的强盗汉人’。你别恨他，他心里的悲痛，实在跟你一模一样。不，他年纪大了，心里感到的悲痛，可比你多得多，深得多。
+        voice:
+          emotion: 确定
+          tone: 沉重
+      - line_number: 9
+        character: 李文秀
+        expression: 若有所思
+        action: 怔怔地听着，喝了一口奶酪，渐渐停下哭泣
+        dialogue: （低声）他……他眼睛里也有眼泪……
+        voice:
+          emotion: 理解
+          tone: 若有所思
+    - beat_number: 3
+      beat_id: beat_3
+      title: 窗外天铃鸟歌声传来，计老人讲述其传说
+      theme: 安慰
+      location: 计老人家，卧室
+      atmosphere: 宁静、忧伤
+      characters:
+      - 李文秀
+      - 计老人
+      lines:
+      - line_number: 1
+        action: 窗外传来一阵奇妙的宛转鸟鸣，声音甜美又凄凉，像少女在唱歌
+      - line_number: 2
+        character: 李文秀
+        expression: 出神
+        action: 侧耳倾听，鸣歌渐渐远去，她呆呆出神
+        dialogue: 爷爷，这鸟儿唱得真好听。
+        voice:
+          emotion: 平静
+          tone: 轻声
+      - line_number: 3
+        character: 计老人
+        expression: 怀念
+        action: 望着窗外，目光悠远
+        dialogue: 是的，唱得真好听！那是天铃鸟，歌声像天上的银铃。这鸟儿只在晚上唱歌，白天睡觉。有人说，这是天上的星星掉下来之后变的。又有些哈萨克人说，这是草原上一个最美丽、最会唱歌的少女死了之后变的——她的情郎不爱她了，她伤心死的。
+        voice:
+          emotion: 感伤
+          tone: 柔和
+      - line_number: 4
+        character: 李文秀
+        expression: 迷惘
+        action: 转向计老人，眼神困惑
+        dialogue: 她最美丽，又最会唱歌，为什么不爱她了？
+        voice:
+          emotion: 好奇
+          tone: 天真的语气
+      - line_number: 5
+        character: 计老人
+        expression: 出神
+        action: 长长叹了口气，目光深邃
+        dialogue: 世界上有许多事情，你小孩子是不懂的。
+        voice:
+          emotion: 无奈
+          tone: 低沉

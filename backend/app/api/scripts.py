@@ -451,3 +451,185 @@ async def get_script_content(script_id: str):
         },
         "message": "success"
     }
+
+
+from fastapi.responses import PlainTextResponse, FileResponse
+from pydantic import BaseModel
+from typing import Optional
+from app.utils.script_exporter import ScriptExporter, export_script_to_yaml, export_script_to_fountain
+
+
+class ScriptExportRequest(BaseModel):
+    """剧本导出请求"""
+    script_data: List[dict]  # 剧本数据
+    novel_title: Optional[str] = ""  # 小说标题
+    novel_id: Optional[str] = ""  # 小说ID
+    format: str = "yaml"  # 导出格式
+    download: bool = False  # 是否下载
+
+
+@router.post("/export")
+async def export_script_from_data(request: ScriptExportRequest):
+    """
+    从传入的剧本数据导出为指定格式
+    
+    支持前端修改剧本后实时导出
+    
+    Args:
+        request: 导出请求，包含剧本数据和元数据
+    
+    Returns:
+        导出的剧本内容
+    """
+    script_data = request.script_data
+    
+    if not script_data:
+        raise HTTPException(status_code=400, detail="剧本数据不能为空")
+    
+    # 根据格式导出
+    format = request.format.lower()
+    script_id = str(uuid.uuid4())[:8]  # 生成临时ID用于文件名
+    
+    if format == "yaml":
+        content = export_script_to_yaml(
+            script_data,
+            novel_title=request.novel_title,
+            novel_id=request.novel_id,
+            script_id=script_id
+        )
+        media_type = "application/x-yaml"
+        file_ext = "yaml"
+    
+    elif format == "json":
+        content = ScriptExporter.to_json(
+            script_data,
+            novel_title=request.novel_title,
+            novel_id=request.novel_id,
+            script_id=script_id
+        )
+        media_type = "application/json"
+        file_ext = "json"
+    
+    elif format == "fountain":
+        content = export_script_to_fountain(
+            script_data,
+            novel_title=request.novel_title
+        )
+        media_type = "text/plain"
+        file_ext = "fountain"
+    
+    else:
+        raise HTTPException(status_code=400, detail=f"不支持的导出格式: {format}")
+    
+    if request.download:
+        # 生成文件名
+        safe_title = request.novel_title.replace(" ", "_").replace("/", "_") if request.novel_title else "script"
+        filename = f"{safe_title}_script.{file_ext}"
+        
+        # 保存到临时文件
+        temp_path = Path(f"storage/exports/{script_id}.{file_ext}")
+        ScriptExporter.save_to_file(content, temp_path)
+        
+        return FileResponse(
+            temp_path,
+            media_type=media_type,
+            filename=filename
+        )
+    else:
+        return PlainTextResponse(
+            content=content,
+            media_type=media_type
+        )
+
+
+@router.get("/{script_id}/export")
+async def export_script(
+    script_id: str,
+    format: str = "yaml",
+    download: bool = False
+):
+    """
+    从已保存的剧本任务导出为指定格式
+    
+    Args:
+        script_id: 剧本任务ID
+        format: 导出格式，支持 yaml/json/fountain
+        download: 是否作为文件下载
+    
+    Returns:
+        导出的剧本内容
+    """
+    # 验证剧本存在
+    task = script_service.get_task(script_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="剧本任务不存在")
+    
+    # 读取剧本数据
+    script_path = script_service.get_task_file(script_id, "script.json")
+    if not script_path:
+        raise HTTPException(status_code=404, detail="剧本尚未生成")
+    
+    with open(script_path, 'r', encoding='utf-8') as f:
+        script_file_content = json.load(f)
+        script_data = script_file_content.get("data", [])
+    
+    if not script_data:
+        raise HTTPException(status_code=404, detail="剧本内容为空")
+    
+    # 获取元数据
+    novel_title = task.get("novel_title", "")
+    novel_id = task.get("novel_id", "")
+    
+    # 根据格式导出
+    format = format.lower()
+    
+    if format == "yaml":
+        content = export_script_to_yaml(
+            script_data,
+            novel_title=novel_title,
+            novel_id=novel_id,
+            script_id=script_id
+        )
+        media_type = "application/x-yaml"
+        file_ext = "yaml"
+    
+    elif format == "json":
+        content = ScriptExporter.to_json(
+            script_data,
+            novel_title=novel_title,
+            novel_id=novel_id,
+            script_id=script_id
+        )
+        media_type = "application/json"
+        file_ext = "json"
+    
+    elif format == "fountain":
+        content = export_script_to_fountain(
+            script_data,
+            novel_title=novel_title
+        )
+        media_type = "text/plain"
+        file_ext = "fountain"
+    
+    else:
+        raise HTTPException(status_code=400, detail=f"不支持的导出格式: {format}")
+    
+    if download:
+        # 生成文件名
+        safe_title = novel_title.replace(" ", "_").replace("/", "_") if novel_title else "script"
+        filename = f"{safe_title}_script.{file_ext}"
+        
+        # 保存到临时文件
+        temp_path = Path(f"storage/exports/{script_id}.{file_ext}")
+        ScriptExporter.save_to_file(content, temp_path)
+        
+        return FileResponse(
+            temp_path,
+            media_type=media_type,
+            filename=filename
+        )
+    else:
+        return PlainTextResponse(
+            content=content,
+            media_type=media_type
+        )

@@ -150,3 +150,42 @@ export const getScripts = (novelId?: string) => {
   const params = novelId ? { novel_id: novelId } : {}
   return api.get('/scripts', { params })
 }
+
+// 从已保存的剧本任务导出（GET）
+export const exportScript = (
+  scriptId: string,
+  format: 'yaml' | 'json' | 'fountain' = 'yaml',
+  download: boolean = true
+) => {
+  return api.get(
+    `/scripts/${scriptId}/export`,
+    {
+      params: { format, download },
+      responseType: download ? 'blob' : 'json'
+    }
+  )
+}
+
+// 从剧本数据直接导出（POST）- 支持前端修改后导出
+export const exportScriptFromData = (
+  scriptData: any[],
+  format: 'yaml' | 'json' | 'fountain' = 'yaml',
+  novelTitle: string = '',
+  novelId: string = '',
+  download: boolean = false
+): Promise<string> => {
+  return api.post(
+    '/scripts/export',
+    {
+      script_data: scriptData,
+      novel_title: novelTitle,
+      novel_id: novelId,
+      format,
+      download
+    },
+    {
+      responseType: 'text',
+      transformResponse: [(data) => data] // 不自动解析 JSON，保持原始文本
+    }
+  ) as Promise<string>
+}
