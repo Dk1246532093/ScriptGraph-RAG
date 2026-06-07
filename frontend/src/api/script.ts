@@ -189,3 +189,13 @@ export const exportScriptFromData = (
     }
   ) as Promise<string>
 }
+
+// 获取历史记录列表
+export const getScriptHistory = () => {
+  return api.get('/scripts/history/list')
+}
+
+// 获取历史记录详情
+export const getScriptHistoryDetail = (scriptId: string) => {
+  return api.get(`/scripts/history/${scriptId}`)
+}

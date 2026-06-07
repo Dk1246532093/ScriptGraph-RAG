@@ -542,6 +542,109 @@ async def export_script_from_data(request: ScriptExportRequest):
         )
 
 
+@router.get("/history/list")
+async def get_script_history():
+    """
+    获取所有剧本生成历史记录
+    
+    Returns:
+        历史记录列表
+    """
+    result_dir = Path("storage/result")
+    if not result_dir.exists():
+        return {"history": []}
+    
+    history_list = []
+    
+    # 遍历所有任务目录
+    for task_dir in sorted(result_dir.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True):
+        if not task_dir.is_dir():
+            continue
+        
+        task_file = task_dir / "task.json"
+        if not task_file.exists():
+            continue
+        
+        try:
+            with open(task_file, 'r', encoding='utf-8') as f:
+                task_data = json.load(f)
+            
+            # 构建历史记录项
+            history_item = {
+                "script_id": task_data.get("script_id", task_dir.name),
+                "novel_title": task_data.get("novel_title", "未知小说"),
+                "novel_id": task_data.get("novel_id", ""),
+                "status": task_data.get("status", "unknown"),
+                "created_at": task_data.get("created_at", ""),
+                "updated_at": task_data.get("updated_at", ""),
+                "config": task_data.get("config", {}),
+                "has_scenes": (task_dir / "scenes.json").exists(),
+                "has_knowledge_graph": (task_dir / "knowledge_graph.json").exists(),
+                "has_script": (task_dir / "script.json").exists()
+            }
+            history_list.append(history_item)
+        except Exception as e:
+            print(f"读取任务 {task_dir.name} 失败: {e}")
+            continue
+    
+    return {"history": history_list}
+
+
+@router.get("/history/{script_id}")
+async def get_script_history_detail(script_id: str):
+    """
+    获取单个剧本历史记录的详细信息
+    
+    Args:
+        script_id: 剧本任务ID
+    
+    Returns:
+        剧本完整数据（包含场景、知识图谱、剧本内容）
+    """
+    result_dir = Path("storage/result")
+    task_dir = result_dir / script_id
+    
+    if not task_dir.exists():
+        raise HTTPException(status_code=404, detail="历史记录不存在")
+    
+    # 读取任务信息
+    task_file = task_dir / "task.json"
+    if not task_file.exists():
+        raise HTTPException(status_code=404, detail="任务信息不存在")
+    
+    with open(task_file, 'r', encoding='utf-8') as f:
+        task_data = json.load(f)
+    
+    # 读取场景数据
+    scenes_data = None
+    scenes_file = task_dir / "scenes.json"
+    if scenes_file.exists():
+        with open(scenes_file, 'r', encoding='utf-8') as f:
+            scenes_data = json.load(f)
+    
+    # 读取知识图谱数据
+    kg_data = None
+    kg_file = task_dir / "knowledge_graph.json"
+    if kg_file.exists():
+        with open(kg_file, 'r', encoding='utf-8') as f:
+            kg_data = json.load(f)
+    
+    # 读取剧本数据
+    script_data = None
+    script_file = task_dir / "script.json"
+    if script_file.exists():
+        with open(script_file, 'r', encoding='utf-8') as f:
+            script_data = json.load(f)
+    
+    return {
+        "script_id": script_id,
+        "task": task_data,
+        "scenes": scenes_data.get("data") if scenes_data else None,
+        "knowledge_graph": kg_data.get("data") if kg_data else None,
+        "script": script_data.get("data") if script_data else None
+    }
+
+
 @router.get("/{script_id}/export")
 async def export_script(
     script_id: str,
