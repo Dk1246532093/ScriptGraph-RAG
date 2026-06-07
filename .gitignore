@@ -43,3 +43,8 @@ backend/storage/result/
 *.mov
 *.mkv
 项目讲解.mp4
+
+# Design documents
+原型图/
+设计文档.md
+剧本YAML Schema 设计文档.md
