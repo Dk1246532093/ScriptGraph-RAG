@@ -2,11 +2,13 @@
 剧本生成 API 路由
 """
 from fastapi import APIRouter, HTTPException
-from typing import List
+from fastapi.responses import StreamingResponse
+from typing import List, AsyncGenerator
 import uuid
 import json
 from datetime import datetime
 from pathlib import Path
+import asyncio
 
 from app.models.script import ScriptGenerateRequest, Script, ScriptConfig
 from app.services.novel_service import novel_service
@@ -17,12 +19,17 @@ from app.utils.script_generator import generate_script_from_scenes
 router = APIRouter()
 
 
+def sse_event(event: str, data: dict) -> str:
+    """生成 SSE 事件格式"""
+    return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
+
+
 @router.post("/generate", response_model=dict)
 async def generate_script(request: ScriptGenerateRequest):
     """
-    生成剧本
+    生成剧本（非流式）
     
-    接收小说ID和章节ID列表，返回剧本生成任务ID
+    接收小说ID和章节ID列表，返回完整剧本生成结果
     """
     # 验证小说是否存在
     novel = novel_service.get_novel(request.novel_id)
@@ -124,6 +131,204 @@ async def generate_script(request: ScriptGenerateRequest):
         "message": "剧本生成完成，包含场景分割、知识图谱和详细剧本",
         "created_at": datetime.now().isoformat()
     }
+
+
+async def generate_script_stream_generator(request: ScriptGenerateRequest) -> AsyncGenerator[str, None]:
+    """
+    生成剧本的流式生成器
+    
+    通过 SSE 实时返回每个阶段的进度和结果
+    """
+    try:
+        # 1. 验证阶段
+        yield sse_event("progress", {
+            "stage": "validating",
+            "message": "正在验证小说和章节...",
+            "progress": 5
+        })
+        await asyncio.sleep(0.1)
+        
+        # 验证小说是否存在
+        novel = novel_service.get_novel(request.novel_id)
+        if not novel:
+            yield sse_event("error", {"message": "小说不存在"})
+            return
+        
+        # 验证章节是否存在
+        chapters = novel_service.get_novel_chapters(request.novel_id)
+        chapter_ids = [ch.id for ch in chapters]
+        invalid_chapters = [cid for cid in request.chapter_ids if cid not in chapter_ids]
+        if invalid_chapters:
+            yield sse_event("error", {"message": f"无效的章节ID: {invalid_chapters}"})
+            return
+        
+        # 获取选中的章节内容
+        selected_chapters = []
+        for cid in request.chapter_ids:
+            chapter = novel_service.get_chapter(request.novel_id, cid)
+            if chapter:
+                selected_chapters.append({
+                    "id": chapter.id,
+                    "title": chapter.title,
+                    "content": chapter.content
+                })
+        
+        # 生成剧本ID
+        script_id = str(uuid.uuid4())
+        
+        yield sse_event("progress", {
+            "stage": "initialized",
+            "message": "验证完成，开始生成任务...",
+            "progress": 10,
+            "script_id": script_id
+        })
+        
+        # 创建任务文件夹
+        script_service.create_script_task(
+            script_id=script_id,
+            novel_id=request.novel_id,
+            novel_title=novel.title,
+            chapter_ids=request.chapter_ids,
+            config=request.config.dict() if request.config else None
+        )
+        
+        # 2. 场景分割阶段
+        yield sse_event("progress", {
+            "stage": "scene_splitting",
+            "message": "正在使用 DeepSeek API 智能分割场景...",
+            "progress": 20
+        })
+        
+        scenes = await process_chapters_to_scenes(selected_chapters)
+        scenes_dict = scenes_to_dict(scenes)
+        script_service.save_scenes(script_id, scenes_dict)
+        
+        yield sse_event("scenes_ready", {
+            "message": f"场景分割完成，共 {len(scenes)} 个场景",
+            "progress": 40,
+            "scene_count": len(scenes),
+            "scenes": scenes_dict
+        })
+        
+        # 3. 知识图谱抽取阶段
+        yield sse_event("progress", {
+            "stage": "knowledge_graph",
+            "message": "正在抽取三层知识图谱（人物、地点、事件）...",
+            "progress": 50
+        })
+        
+        kg_path = await script_service.generate_and_save_knowledge_graph(
+            script_id, selected_chapters
+        )
+        
+        kg_data = {}
+        if kg_path.exists():
+            with open(kg_path, 'r', encoding='utf-8') as f:
+                kg_file_content = json.load(f)
+                kg_data = kg_file_content.get("data", {})
+        
+        yield sse_event("knowledge_graph_ready", {
+            "message": f"知识图谱抽取完成，共 {len(kg_data.get('nodes', []))} 个节点，{len(kg_data.get('edges', []))} 条关系",
+            "progress": 70,
+            "kg_node_count": len(kg_data.get("nodes", [])),
+            "kg_edge_count": len(kg_data.get("edges", [])),
+            "knowledge_graph": kg_data
+        })
+        
+        # 4. 剧本生成阶段
+        yield sse_event("progress", {
+            "stage": "script_generating",
+            "message": "正在根据场景和知识图谱生成详细剧本...",
+            "progress": 75
+        })
+        
+        try:
+            script_data = await generate_script_from_scenes(scenes_dict, kg_data)
+            print(f"Script generated: {len(script_data)} scenes")
+        except Exception as e:
+            print(f"Error generating script: {e}")
+            import traceback
+            traceback.print_exc()
+            yield sse_event("error", {"message": f"剧本生成失败: {str(e)}"})
+            return
+        
+        # 保存剧本
+        if script_data:
+            save_path = script_service.save_script(script_id, script_data)
+            print(f"Script saved to: {save_path}")
+        
+        # 统计剧本信息
+        total_beats = sum(len(scene.get("beats", [])) for scene in script_data)
+        total_lines = sum(
+            sum(len(beat.get("script", [])) for beat in scene.get("beats", []))
+            for scene in script_data
+        )
+        
+        yield sse_event("script_ready", {
+            "message": f"剧本生成完成，共 {len(script_data)} 个场景，{total_beats} 个节拍",
+            "progress": 95,
+            "script_scene_count": len(script_data),
+            "script_beat_count": total_beats,
+            "script_line_count": total_lines
+        })
+        
+        # 5. 完成阶段
+        yield sse_event("completed", {
+            "message": "剧本生成全部完成！",
+            "progress": 100,
+            "script_id": script_id,
+            "novel_id": request.novel_id,
+            "novel_title": novel.title,
+            "selected_chapters": [
+                {"id": ch["id"], "title": ch["title"]} for ch in selected_chapters
+            ],
+            "scene_count": len(scenes),
+            "kg_node_count": len(kg_data.get("nodes", [])),
+            "kg_edge_count": len(kg_data.get("edges", [])),
+            "script_scene_count": len(script_data),
+            "script_beat_count": total_beats,
+            "script_line_count": total_lines,
+            "status": "completed",
+            "created_at": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        print(f"Stream error: {e}")
+        import traceback
+        traceback.print_exc()
+        yield sse_event("error", {"message": f"生成过程出错: {str(e)}"})
+
+
+@router.post("/generate/stream")
+async def generate_script_stream(request: ScriptGenerateRequest):
+    """
+    流式生成剧本
+    
+    通过 SSE 实时返回生成进度，前端可以按阶段展示：
+    - progress: 进度更新（stage: validating/scene_splitting/knowledge_graph/script_generating）
+    - scenes_ready: 场景分割完成
+    - knowledge_graph_ready: 知识图谱抽取完成
+    - script_ready: 剧本生成完成
+    - completed: 全部完成
+    - error: 发生错误
+    
+    前端使用 EventSource 接收：
+    ```javascript
+    const eventSource = new EventSource('/api/scripts/generate/stream');
+    eventSource.addEventListener('progress', (e) => { ... });
+    eventSource.addEventListener('scenes_ready', (e) => { ... });
+    eventSource.addEventListener('completed', (e) => { ... });
+    ```
+    """
+    return StreamingResponse(
+        generate_script_stream_generator(request),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"  # 禁用 Nginx 缓冲
+        }
+    )
 
 
 @router.get("/{script_id}", response_model=dict)
