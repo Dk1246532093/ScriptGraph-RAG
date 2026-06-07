@@ -62,6 +62,14 @@
             </el-button>
             <el-button
               v-if="item.has_script"
+              type="warning"
+              size="small"
+              @click.stop="editScript(item.script_id)"
+            >
+              <el-icon><Edit /></el-icon> 编辑
+            </el-button>
+            <el-button
+              v-if="item.has_script"
               type="info"
               size="small"
               @click.stop="handleExport(item.script_id, 'yaml')"
@@ -178,10 +186,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Calendar, Document, FullScreen, Share, Reading } from '@element-plus/icons-vue'
+import { Calendar, Document, FullScreen, Share, Reading, Edit } from '@element-plus/icons-vue'
 import { getScriptHistory, getScriptHistoryDetail, exportScript } from '@/api/script'
 import KnowledgeGraph from '@/components/KnowledgeGraph.vue'
+
+const router = useRouter()
 
 interface HistoryItem {
   script_id: string
@@ -219,7 +230,7 @@ const currentScriptTitle = ref('')
 const fetchHistory = async () => {
   loading.value = true
   try {
-    const response = await getScriptHistory()
+    const response = await getScriptHistory() as any
     historyList.value = response.history || []
   } catch (error: any) {
     ElMessage.error(`获取历史记录失败: ${error.message || '未知错误'}`)
@@ -252,7 +263,7 @@ const viewKnowledgeGraph = async (scriptId: string) => {
   kgData.value = null
 
   try {
-    const response = await getScriptHistoryDetail(scriptId)
+    const response = await getScriptHistoryDetail(scriptId) as any
     kgData.value = response.knowledge_graph
   } catch (error: any) {
     ElMessage.error(`获取知识图谱失败: ${error.message || '未知错误'}`)
@@ -269,7 +280,7 @@ const viewScript = async (scriptId: string) => {
   scriptData.value = null
 
   try {
-    const response = await getScriptHistoryDetail(scriptId)
+    const response = await getScriptHistoryDetail(scriptId) as any
     scriptData.value = response.script || []
     currentScriptTitle.value = response.task?.novel_title || '剧本'
   } catch (error: any) {
@@ -278,6 +289,14 @@ const viewScript = async (scriptId: string) => {
   } finally {
     scriptLoading.value = false
   }
+}
+
+// 编辑剧本
+const editScript = (scriptId: string) => {
+  router.push({
+    path: '/script-editor',
+    query: { scriptId }
+  })
 }
 
 // 导出剧本
