@@ -14,7 +14,7 @@ from app.models.script import ScriptGenerateRequest, Script, ScriptConfig
 from app.services.novel_service import novel_service
 from app.services.script_service import script_service
 from app.utils.scene_splitter import process_chapters_to_scenes, scenes_to_dict
-from app.utils.script_generator import generate_script_from_scenes
+from app.utils.script_generator import generate_script_from_scenes, generate_script_from_scenes_stream
 
 router = APIRouter()
 
@@ -235,16 +235,52 @@ async def generate_script_stream_generator(request: ScriptGenerateRequest) -> As
             "knowledge_graph": kg_data
         })
         
-        # 4. 剧本生成阶段
+        # 4. 剧本生成阶段（流式）
         yield sse_event("progress", {
             "stage": "script_generating",
-            "message": "正在根据场景和知识图谱生成详细剧本...",
+            "message": f"正在生成剧本，共 {len(scenes_dict)} 个场景...",
             "progress": 75
         })
         
+        script_data = []
+        total_beats = 0
+        total_lines = 0
+        
         try:
-            script_data = await generate_script_from_scenes(scenes_dict, kg_data)
+            # 使用流式生成器，每完成一个场景就发送给前端
+            async for scene_result in generate_script_from_scenes_stream(scenes_dict, kg_data):
+                scene_script = scene_result["scene"]
+                scene_index = scene_result["index"]
+                total_scenes = scene_result["total"]
+                scene_progress = scene_result["progress_percent"]
+                
+                script_data.append(scene_script)
+                
+                # 计算当前场景的节拍和台词数
+                scene_beats = len(scene_script.get("beats", []))
+                scene_lines = sum(
+                    len(beat.get("script", [])) for beat in scene_script.get("beats", [])
+                )
+                total_beats += scene_beats
+                total_lines += scene_lines
+                
+                # 发送单个场景完成的事件
+                yield sse_event("scene_generated", {
+                    "message": f"场景 {scene_index + 1}/{total_scenes} 生成完成: {scene_script.get('title', '')}",
+                    "progress": 75 + int(scene_progress * 0.2),  # 75%~95%
+                    "scene_index": scene_index,
+                    "total_scenes": total_scenes,
+                    "scene": scene_script,
+                    "scene_beats": scene_beats,
+                    "scene_lines": scene_lines,
+                    "accumulated_beats": total_beats,
+                    "accumulated_lines": total_lines
+                })
+                
+                print(f"[Stream] Scene {scene_index + 1}/{total_scenes} sent to client")
+            
             print(f"Script generated: {len(script_data)} scenes")
+            
         except Exception as e:
             print(f"Error generating script: {e}")
             import traceback
@@ -256,13 +292,6 @@ async def generate_script_stream_generator(request: ScriptGenerateRequest) -> As
         if script_data:
             save_path = script_service.save_script(script_id, script_data)
             print(f"Script saved to: {save_path}")
-        
-        # 统计剧本信息
-        total_beats = sum(len(scene.get("beats", [])) for scene in script_data)
-        total_lines = sum(
-            sum(len(beat.get("script", [])) for beat in scene.get("beats", []))
-            for scene in script_data
-        )
         
         yield sse_event("script_ready", {
             "message": f"剧本生成完成，共 {len(script_data)} 个场景，{total_beats} 个节拍",

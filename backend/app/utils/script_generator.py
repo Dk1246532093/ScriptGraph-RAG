@@ -308,6 +308,36 @@ async def generate_script_from_scenes(
     return script_scenes
 
 
+async def generate_script_from_scenes_stream(
+    scenes: List[Dict[str, Any]],
+    knowledge_graph: Dict[str, Any]
+):
+    """
+    流式生成剧本，每完成一个场景就 yield 一次
+    
+    Args:
+        scenes: 场景数据列表
+        knowledge_graph: 知识图谱数据
+    
+    Yields:
+        (scene_index, total_scenes, scene_script) 每完成一个场景的进度和剧本
+    """
+    generator = get_generator()
+    total_scenes = len(scenes)
+    
+    for index, scene in enumerate(scenes):
+        print(f"[Stream] Generating script for scene {index + 1}/{total_scenes}: {scene.get('title', '')}...")
+        script_scene = await generator.generate_scene_script(scene, knowledge_graph)
+        
+        # 每完成一个场景就 yield
+        yield {
+            "index": index,
+            "total": total_scenes,
+            "scene": script_scene,
+            "progress_percent": int((index + 1) / total_scenes * 100)
+        }
+
+
 def script_to_dict(script_scenes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """将剧本对象列表转换为字典列表（备用，实际使用字典直接返回）"""
     # 实际业务逻辑中直接返回字典，此函数保留用于类型兼容
