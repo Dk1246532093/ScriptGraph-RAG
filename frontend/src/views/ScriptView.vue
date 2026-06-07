@@ -92,6 +92,40 @@
         />
       </div>
 
+      <!-- 剧本统计 -->
+      <div v-if="scriptStats.scene_count > 0" class="section stats-section">
+        <h2 class="section-title">剧本生成结果</h2>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ scriptStats.scene_count }}</div>
+            <div class="stat-label">场景数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ scriptStats.beat_count }}</div>
+            <div class="stat-label">节拍数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ scriptStats.line_count }}</div>
+            <div class="stat-label">台词数</div>
+          </div>
+        </div>
+        <div class="script-actions" v-if="generatedScriptId">
+          <el-button type="success" @click="viewScript">查看完整剧本</el-button>
+          <el-dropdown @command="handleExport">
+            <el-button type="primary">
+              导出剧本<el-icon class="el-icon--right"><arrow-down /></el-icon>
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="yaml">导出 YAML</el-dropdown-item>
+                <el-dropdown-item command="json">导出 JSON</el-dropdown-item>
+                <el-dropdown-item command="fountain">导出 Fountain</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </div>
+
       <!-- 剧本展示区域：左场景列表 + 右剧本内容 -->
       <div v-if="scriptScenes.length > 0" class="script-display-section">
         <!-- 左侧：场景列表 -->
@@ -179,28 +213,6 @@
           </div>
         </div>
       </div>
-
-      <!-- 剧本统计 -->
-      <div v-if="scriptStats.scene_count > 0" class="section stats-section">
-        <h2 class="section-title">剧本生成结果</h2>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value">{{ scriptStats.scene_count }}</div>
-            <div class="stat-label">场景数</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ scriptStats.beat_count }}</div>
-            <div class="stat-label">节拍数</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ scriptStats.line_count }}</div>
-            <div class="stat-label">台词数</div>
-          </div>
-        </div>
-        <div class="script-actions" v-if="generatedScriptId">
-          <el-button type="success" @click="viewScript">查看完整剧本</el-button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -209,8 +221,9 @@
   import { ref, computed, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { ElMessage } from 'element-plus'
+  import { ArrowDown } from '@element-plus/icons-vue'
   import { getNovelDetail, getNovelChapters } from '@/api/novel'
-  import { generateScriptStream } from '@/api/script'
+  import { generateScriptStream, exportScriptFromData } from '@/api/script'
   import KnowledgeGraph from '@/components/KnowledgeGraph.vue'
 
   const route = useRoute()
@@ -425,6 +438,44 @@
         path: '/script-detail',
         query: { scriptId: generatedScriptId.value }
       })
+    }
+  }
+
+  // 导出剧本
+  const handleExport = async (format: 'yaml' | 'json' | 'fountain') => {
+    if (scriptScenes.value.length === 0) {
+      ElMessage.warning('暂无剧本可导出')
+      return
+    }
+
+    try {
+      // 使用当前剧本数据直接导出（支持修改后的数据）
+      const content = await exportScriptFromData(
+        scriptScenes.value,
+        format,
+        novelTitle.value,
+        novelId.value,
+        false
+      )
+
+      // 创建 Blob 并下载
+      const blob = new Blob([content as string], { type: 'text/plain;charset=utf-8' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+
+      // 设置文件名
+      const extension = format === 'fountain' ? 'fountain' : format
+      link.download = `${novelTitle.value || '剧本'}_导出.${extension}`
+
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+
+      ElMessage.success(`已导出 ${format.toUpperCase()} 格式剧本`)
+    } catch (error: any) {
+      ElMessage.error(`导出失败: ${error.message || '未知错误'}`)
     }
   }
 
