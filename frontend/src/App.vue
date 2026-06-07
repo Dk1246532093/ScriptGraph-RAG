@@ -7,8 +7,6 @@
       <ul class="nav-links">
         <li><router-link to="/">首页</router-link></li>
         <li><router-link to="/bookshelf">书架</router-link></li>
-        <li><router-link to="/knowledge-graph">知识图谱</router-link></li>
-        <li><router-link to="/script">剧本生成</router-link></li>
         <li><router-link to="/history">历史记录</router-link></li>
       </ul>
     </nav>

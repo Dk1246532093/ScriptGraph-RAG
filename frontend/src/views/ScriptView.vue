@@ -111,6 +111,9 @@
         </div>
         <div class="script-actions" v-if="generatedScriptId">
           <el-button type="success" @click="viewScript">查看完整剧本</el-button>
+          <el-button type="warning" @click="editScript">
+            <el-icon><Edit /></el-icon> 编辑剧本
+          </el-button>
           <el-dropdown @command="handleExport">
             <el-button type="primary">
               导出剧本<el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -221,7 +224,7 @@
   import { ref, computed, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { ElMessage } from 'element-plus'
-  import { ArrowDown } from '@element-plus/icons-vue'
+  import { ArrowDown, Edit } from '@element-plus/icons-vue'
   import { getNovelDetail, getNovelChapters } from '@/api/novel'
   import { generateScriptStream, exportScriptFromData } from '@/api/script'
   import KnowledgeGraph from '@/components/KnowledgeGraph.vue'
@@ -438,6 +441,18 @@
         path: '/script-detail',
         query: { scriptId: generatedScriptId.value }
       })
+    }
+  }
+
+  // 编辑剧本
+  const editScript = () => {
+    if (generatedScriptId.value) {
+      router.push({
+        path: '/script-editor',
+        query: { scriptId: generatedScriptId.value }
+      })
+    } else {
+      ElMessage.warning('请先生成剧本')
     }
   }
 
